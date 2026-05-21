@@ -9,6 +9,7 @@
 * { margin:0; padding:0; box-sizing:border-box; }
 body { background:#fff; color:#0a0a0a; font-family:'Space Grotesk',sans-serif; min-height:100vh; }
 
+/* ── HEADER ── */
 .site-header { border-bottom:3px solid #0a0a0a; display:grid; grid-template-columns:1fr 1fr; }
 .header-left { padding:32px 48px; border-right:3px solid #0a0a0a; }
 .logo-eyebrow { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.3em; text-transform:uppercase; color:#666; margin-bottom:6px; }
@@ -21,17 +22,22 @@ body { background:#fff; color:#0a0a0a; font-family:'Space Grotesk',sans-serif; m
 .search-btn { padding:12px 24px; background:#0a0a0a; color:#fff; border:2px solid #0a0a0a; font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; transition:background 0.2s; white-space:nowrap; }
 .search-btn:hover { background:#1a6fd4; border-color:#1a6fd4; }
 
-.site-nav { display:flex; border-bottom:2px solid #0a0a0a; padding:0 48px; }
-.nav-btn { padding:14px 28px; background:none; border:none; border-bottom:3px solid transparent; margin-bottom:-2px; font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.15em; text-transform:uppercase; color:#666; cursor:pointer; transition:all 0.2s; }
+/* ── NAV ── */
+.site-nav { display:flex; border-bottom:2px solid #0a0a0a; padding:0 48px; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+.site-nav::-webkit-scrollbar { display:none; }
+.nav-btn { padding:14px 28px; background:none; border:none; border-bottom:3px solid transparent; margin-bottom:-2px; font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.15em; text-transform:uppercase; color:#666; cursor:pointer; transition:all 0.2s; white-space:nowrap; flex-shrink:0; }
 .nav-btn:hover { color:#0a0a0a; }
 .nav-btn.active { color:#1a6fd4; border-bottom-color:#1a6fd4; }
 
+/* ── PAGES ── */
 .page { display:none; padding:48px; }
 .page.active { display:block; }
 
+/* ── YEAR / BROWSE ── */
 .year-section { margin-bottom:48px; }
 .year-label { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.3em; text-transform:uppercase; color:#444; padding-bottom:12px; border-bottom:2px solid #0a0a0a; margin-bottom:0; }
 
+/* ── ISSUE ROWS ── */
 .item { border-bottom:1px solid #ddd; }
 .item-row { display:grid; grid-template-columns:48px 1fr auto; align-items:start; padding:18px 16px; gap:20px; cursor:pointer; transition:background 0.15s; user-select:none; }
 .item-row:hover { background:#f0f6ff; }
@@ -50,6 +56,7 @@ body { background:#fff; color:#0a0a0a; font-family:'Space Grotesk',sans-serif; m
 .item-chevron { font-size:12px; color:#bbb; transition:transform 0.25s; }
 .item.open > .item-row .item-chevron { transform:rotate(180deg); color:#1a6fd4; }
 
+/* ── EXPANDED PANEL ── */
 .item-panel { display:none; padding:24px 24px 24px 84px; background:#f8fbff; border-top:1px solid #d0e4f8; }
 .item.open > .item-panel { display:block; }
 
@@ -59,6 +66,7 @@ body { background:#fff; color:#0a0a0a; font-family:'Space Grotesk',sans-serif; m
 .item-dl { display:inline-flex; align-items:center; gap:8px; background:#0a0a0a; color:#fff; padding:10px 20px; font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; border:none; transition:background 0.2s; }
 .item-dl:hover { background:#1a6fd4; }
 
+/* ── TOPICS ── */
 .topic-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:2px; margin-bottom:48px; }
 .topic-btn { padding:20px 24px; background:#f5f5f5; border:none; text-align:left; cursor:pointer; transition:all 0.2s; border-left:4px solid transparent; width:100%; }
 .topic-btn:hover { background:#f0f6ff; border-left-color:#1a6fd4; }
@@ -72,9 +80,93 @@ body { background:#fff; color:#0a0a0a; font-family:'Space Grotesk',sans-serif; m
 .topic-clear { font-family:'DM Mono',monospace; font-size:11px; color:#666; cursor:pointer; border:1px solid #ddd; padding:6px 14px; background:none; transition:all 0.2s; }
 .topic-clear:hover { border-color:#0a0a0a; color:#0a0a0a; }
 
+/* ── SEARCH ── */
 .results-header { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.15em; text-transform:uppercase; color:#666; margin-bottom:24px; padding-bottom:12px; border-bottom:2px solid #0a0a0a; }
 .results-header b { color:#1a6fd4; }
 .no-results { padding:48px; text-align:center; color:#aaa; font-size:16px; }
+
+/* ── AUTHORS ── */
+.author-letter-group { margin-bottom:32px; }
+.author-letter-label { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.3em; color:#444; padding-bottom:8px; border-bottom:2px solid #0a0a0a; margin-bottom:0; }
+.author-row { border-bottom:1px solid #eee; }
+.author-name-row { display:grid; grid-template-columns:1fr auto; align-items:center; padding:14px 16px; cursor:pointer; transition:background 0.15s; user-select:none; }
+.author-name-row:hover { background:#f0f6ff; }
+.author-name-text { font-size:16px; font-weight:600; color:#0a0a0a; }
+.author-name-text.active { color:#1a6fd4; }
+.author-name-meta { display:flex; align-items:center; gap:12px; }
+.author-issue-count { font-family:'DM Mono',monospace; font-size:11px; color:#999; }
+.author-chevron { font-size:12px; color:#bbb; transition:transform 0.25s; display:inline-block; }
+.author-chevron.open { transform:rotate(180deg); color:#1a6fd4; }
+.author-panel { background:#f8fbff; border-top:1px solid #d0e4f8; padding:8px 16px 16px 32px; }
+.author-issue-row { display:grid; grid-template-columns:1fr auto; align-items:center; padding:14px 0; border-bottom:1px solid #eef2f8; cursor:pointer; gap:16px; }
+.author-issue-row:hover .author-issue-title { color:#1a6fd4; }
+.author-issue-date { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:#999; margin-bottom:4px; }
+.author-issue-title { font-size:14px; color:#0a0a0a; line-height:1.5; }
+.author-issue-dl { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:#1a6fd4; white-space:nowrap; flex-shrink:0; }
+
+/* ════════════════════════════════════════
+   MOBILE  ≤ 680px
+   ════════════════════════════════════════ */
+@media (max-width:680px) {
+
+  /* Header stacks vertically */
+  .site-header { grid-template-columns:1fr; }
+  .header-left { padding:20px 20px 16px; border-right:none; border-bottom:2px solid #0a0a0a; }
+  .logo-eyebrow { font-size:9px; letter-spacing:0.2em; }
+  .logo-title { font-size:24px; }
+  .header-right { padding:14px 20px; }
+  .search-input { font-size:16px; /* prevent iOS zoom */ padding:11px 14px; }
+  .search-btn { padding:11px 16px; font-size:10px; }
+
+  /* Nav scrolls horizontally, smaller padding */
+  .site-nav { padding:0 12px; }
+  .nav-btn { padding:12px 16px; font-size:10px; letter-spacing:0.1em; }
+
+  /* Page padding */
+  .page { padding:20px 16px; }
+
+  /* Issue rows: collapse num+meta into a tighter layout */
+  .item-row { grid-template-columns:36px 1fr auto; gap:10px; padding:14px 12px; }
+  .item-num { font-size:11px; padding-top:3px; }
+  .item-title { font-size:15px; }
+  .item-sub { font-size:13px; }
+  .item-date { font-size:10px; }
+  .item-chevron { font-size:11px; }
+
+  /* Expanded panel: remove the large left indent */
+  .item-panel { padding:16px; }
+  .item-article { font-size:13px; line-height:1.75; padding:12px; max-height:400px; }
+
+  /* Download button full-width on mobile */
+  .item-dl { width:100%; justify-content:center; padding:12px 16px; font-size:10px; }
+
+  /* Topics: single column on very small screens */
+  .topic-grid { grid-template-columns:1fr 1fr; }
+  .topic-btn { padding:16px 16px; }
+  .topic-name { font-size:13px; }
+
+  .topic-filter-header { flex-direction:column; align-items:flex-start; gap:12px; }
+  .topic-filter-title { font-size:18px; }
+
+  .year-label { font-size:10px; letter-spacing:0.2em; }
+  .no-results { padding:32px 16px; font-size:14px; }
+
+  /* Authors */
+  .author-name-row { padding:12px 12px; }
+  .author-name-text { font-size:15px; }
+  .author-panel { padding:8px 12px 16px 16px; }
+  .author-issue-row { grid-template-columns:1fr auto; gap:10px; }
+  .author-issue-title { font-size:13px; }
+}
+
+/* ════════════════════════════════════════
+   SMALL MOBILE  ≤ 400px
+   ════════════════════════════════════════ */
+@media (max-width:400px) {
+  .topic-grid { grid-template-columns:1fr; }
+  .logo-title { font-size:21px; }
+  .item-title { font-size:14px; }
+}
 </style>
 </head>
 <body>
@@ -3304,32 +3396,31 @@ function renderAuthors(expandAuthor) {
   var html = '';
 
   Object.keys(letters).sort().forEach(function(letter) {
-    html += '<div id="author-letter-' + letter + '" style="margin-bottom:32px;">';
-    html += '<div style="font-family:DM Mono,monospace;font-size:11px;letter-spacing:0.3em;color:#444;padding-bottom:8px;border-bottom:2px solid #0a0a0a;margin-bottom:0;">' + letter + '</div>';
+    html += '<div id="author-letter-' + letter + '" class="author-letter-group">';
+    html += '<div class="author-letter-label">' + letter + '</div>';
 
     letters[letter].forEach(function(author) {
       var issues = getIssuesByAuthor(author);
       var isExpanded = expandAuthor === author;
-      html += '<div class="author-row" style="border-bottom:1px solid #eee;">';
-      html += '<div class="author-name-row" data-author="' + author + '" style="display:grid;grid-template-columns:1fr auto;align-items:center;padding:14px 16px;cursor:pointer;transition:background 0.15s;user-select:none;">';
-      html += '<div style="font-size:16px;font-weight:600;color:' + (isExpanded ? '#1a6fd4' : '#0a0a0a') + ';">' + author + '</div>';
-      html += '<div style="display:flex;align-items:center;gap:12px;">';
-      html += '<span style="font-family:DM Mono,monospace;font-size:11px;color:#999;">' + issues.length + ' issue' + (issues.length !== 1 ? 's' : '') + '</span>';
-      html += '<span style="font-size:12px;color:#bbb;transition:transform 0.25s;display:inline-block;' + (isExpanded ? 'transform:rotate(180deg);color:#1a6fd4;' : '') + '">▼</span>';
+      html += '<div class="author-row">';
+      html += '<div class="author-name-row' + (isExpanded ? ' expanded' : '') + '" data-author="' + author + '">';
+      html += '<div class="author-name-text' + (isExpanded ? ' active' : '') + '">' + author + '</div>';
+      html += '<div class="author-name-meta">';
+      html += '<span class="author-issue-count">' + issues.length + ' issue' + (issues.length !== 1 ? 's' : '') + '</span>';
+      html += '<span class="author-chevron' + (isExpanded ? ' open' : '') + '">▼</span>';
       html += '</div></div>';
 
       if (isExpanded) {
-        html += '<div style="background:#f8fbff;border-top:1px solid #d0e4f8;padding:8px 16px 16px 32px;">';
+        html += '<div class="author-panel">';
         issues.forEach(function(issue) {
-          // Build full contents line: all articles and authors in this issue
           var contents = issue.title + ': ' + issue.author;
           if (issue.subtitle) contents += '<br>' + issue.subtitle;
-          html += '<div class="author-issue-row" data-pdf="' + issue.pdf + '" style="display:grid;grid-template-columns:1fr auto;align-items:center;padding:14px 0;border-bottom:1px solid #eef2f8;cursor:pointer;gap:16px;">';
+          html += '<div class="author-issue-row" data-pdf="' + issue.pdf + '">';
           html += '<div>';
-          html += '<div style="font-family:DM Mono,monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#999;margin-bottom:4px;">' + issue.month + ' ' + issue.year + '</div>';
-          html += '<div style="font-size:14px;color:#0a0a0a;line-height:1.5;">' + contents + '</div>';
+          html += '<div class="author-issue-date">' + issue.month + ' ' + issue.year + '</div>';
+          html += '<div class="author-issue-title">' + contents + '</div>';
           html += '</div>';
-          html += '<div style="font-family:DM Mono,monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#1a6fd4;white-space:nowrap;flex-shrink:0;">PDF ↓</div>';
+          html += '<div class="author-issue-dl">PDF ↓</div>';
           html += '</div>';
         });
         html += '</div>';

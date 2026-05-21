@@ -65,8 +65,8 @@
   .year-section { margin-bottom: 48px; }
   .year-label { font-family: 'Helvetica Neue', Arial, sans-serif; font-weight: 900; font-size: 38px; font-weight: 900; color: var(--paper-rule); line-height: 1; margin-bottom: 12px; letter-spacing: -1px; }
   .pdf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
-  .pdf-card { background: #d0dff0; border: 1px solid #b0c8e8; padding: 16px; transition: all 0.2s; position: relative; }
-  .pdf-card:hover { border-color: var(--ink-mid); background: #b8d0ec; transform: translateY(-1px); }
+  .pdf-card { background: #7aa4c8; border: 1px solid #5a88b0; padding: 16px; transition: all 0.2s; position: relative; }
+  .pdf-card:hover { border-color: var(--ink-mid); background: #6090b8; transform: translateY(-1px); }
   .pdf-card .issue-date { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ink-faint); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
   .pdf-card .issue-title { font-family: 'Helvetica Neue', Arial, sans-serif; font-weight: 900; font-size: 15px; font-weight: 700; color: var(--ink); line-height: 1.3; margin-bottom: 2px; }
   .pdf-card .issue-author { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ink-mid); letter-spacing: 0.04em; margin-bottom: 8px; font-style: italic; }
@@ -97,8 +97,8 @@
   .topic-card-body li:hover { color: var(--ink); }
   .topic-card-body li span { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ink-faint); }
 
-  .result-item { padding: 18px 0; border-bottom: var(--rule-thin); display: grid; grid-template-columns: 140px 1fr; gap: 20px; align-items: start; }
-  .result-meta { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ink-faint); letter-spacing: 0.05em; text-transform: uppercase; line-height: 1.7; }
+  .result-item { padding: 18px 0; border-bottom: var(--rule-thin); display: grid; grid-template-columns: 120px 1fr; gap: 20px; align-items: start; }
+  .result-meta { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ink-faint); letter-spacing: 0.05em; text-transform: uppercase; line-height: 1.7; word-break: break-word; }
   .result-year { font-size: 22px; font-family: 'Helvetica Neue', Arial, sans-serif; font-weight: 900; color: var(--ink-mid); font-weight: 700; display: block; letter-spacing: 0; text-transform: none; margin-bottom: 2px; }
   .result-content h3 { font-family: 'Helvetica Neue', Arial, sans-serif; font-weight: 900; font-size: 18px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
   .result-content h3 mark { background: #ffe033; color: var(--ink); padding: 0 2px; font-weight: inherit; }
@@ -248,7 +248,7 @@
     <span class="search-icon">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
     </span>
-    <input type="text" id="searchInput" placeholder="Search full text across all issues — try 'harvest festival', 'school board', 'fire department'…" oninput="onSearchInput()" onkeydown="if(event.key==='Enter') runSearch()">
+    <input type="text" id="searchInput" placeholder="Search all issues — try 'resurrection', 'faith', 'Holy Spirit', 'prayer'…" oninput="onSearchInput()" onkeydown="if(event.key==='Enter') runSearch()">
   </div>
   <button class="search-btn" onclick="runSearch()">Search</button>
   <button class="clear-btn" id="clearBtn" onclick="clearSearch()">✕ Clear</button>
@@ -587,10 +587,11 @@ function runSearch() {
       el.innerHTML = `
         <div class="result-meta">
           <span class="result-year">${issue.year}</span>
-          ${issue.month}<br><br>${tags}
+          ${issue.month}
         </div>
         <div class="result-content">
           <h3>${hlText(issue.title, terms)}</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px;">${tags}</div>
           <p>${highlighted}</p>
           <button class="dl-link" onclick="handleDownload('${issue.month} ${issue.year}','${issue.fileName||''}','${issue.pdf||''}')">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>

@@ -503,6 +503,12 @@ function renderYearArchive(filterTopic = null) {
       const card = document.createElement('div');
       card.className = 'pdf-card';
       card.style.cursor = 'pointer';
+      if (issue.cover) {
+        card.style.backgroundImage = `url(${issue.cover})`;
+        card.style.backgroundSize = 'cover';
+        card.style.backgroundPosition = 'center top';
+        card.style.background = `linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.65)), url(${issue.cover}) center top / cover no-repeat`;
+      }
       card.onclick = function(e) {
         if (e.target.closest('.card-admin-actions')) return;
         if (issue.pdf) window.open(issue.pdf, '_blank');

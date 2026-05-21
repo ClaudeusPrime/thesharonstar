@@ -3,430 +3,105 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Sharon Star — Newsletter Archive</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<title>The Sharon Star</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --ink: #0a1628;
-    --ink-mid: #1a3a6b;
-    --ink-light: #4a6fa5;
-    --ink-faint: #a0b8d8;
-    --paper: #ffffff;
-    --paper-warm: #f0f5fb;
-    --paper-rule: #c8daf0;
-    --gold: #1565c0;
-    --gold-light: #4a90d9;
-    --red: #1a4a8b;
-    --green: #1a6a3a;
-    --rule-thin: 1px solid var(--paper-rule);
-    --rule-thick: 3px solid var(--ink);
-    --rule-mid: 1.5px solid var(--ink-mid);
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: var(--paper); color: var(--ink); font-family: 'Helvetica Neue', Arial, sans-serif; min-height: 100vh; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#fff; color:#0a0a0a; font-family:'Space Grotesk',sans-serif; min-height:100vh; }
 
-  .masthead { background: #ffffff; border-bottom: 3px solid var(--ink); }
-  .masthead-top { display: flex; justify-content: space-between; align-items: center; padding: 10px 48px 8px; border-bottom: var(--rule-thin); font-family: 'DM Mono', monospace; font-size: 10.5px; color: var(--ink-light); letter-spacing: 0.05em; }
-  .admin-btn { background: none; border: 1px solid var(--ink-faint); color: var(--ink-light); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.08em; padding: 4px 12px; cursor: pointer; text-transform: uppercase; transition: all 0.2s; }
-  .admin-btn:hover { border-color: var(--ink-mid); color: var(--ink); background: var(--paper-warm); }
-  .masthead-center { text-align: center; padding: 24px 48px 16px; }
-  .masthead-center::before, .masthead-center::after { content: none; display: none; }
-  .title-main { font-family: 'Helvetica Neue', Arial, sans-serif; font-weight: 900; font-size: 78px; font-weight: 900; letter-spacing: -1px; line-height: 0.92; color: var(--ink); text-transform: uppercase; }
-  .title-sub { font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: var(--ink-light); margin-top: 8px; font-weight: 400; }
-  .masthead-rule { height: 4px; background: var(--gold-light); }
+.site-header { border-bottom:3px solid #0a0a0a; display:grid; grid-template-columns:1fr 1fr; }
+.header-left { padding:32px 48px; border-right:3px solid #0a0a0a; }
+.logo-eyebrow { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.3em; text-transform:uppercase; color:#666; margin-bottom:6px; }
+.logo-title { font-size:30px; font-weight:700; color:#0a0a0a; letter-spacing:-0.5px; cursor:pointer; }
+.logo-title span { color:#1a6fd4; }
+.header-right { padding:32px 48px; display:flex; align-items:center; gap:0; }
+.search-input { flex:1; padding:12px 20px; background:#f5f5f5; border:2px solid #0a0a0a; color:#0a0a0a; font-family:'Space Grotesk',sans-serif; font-size:14px; outline:none; transition:border-color 0.2s; }
+.search-input:focus { border-color:#1a6fd4; }
+.search-input::placeholder { color:#999; }
+.search-btn { padding:12px 24px; background:#0a0a0a; color:#fff; border:2px solid #0a0a0a; font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; transition:background 0.2s; white-space:nowrap; }
+.search-btn:hover { background:#1a6fd4; border-color:#1a6fd4; }
 
-  nav { background: #f0f5fb; border-bottom: 1px solid var(--paper-rule); padding: 0 48px; display: flex; align-items: center; }
-  nav button { background: none; border: none; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-mid); padding: 13px 20px; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; position: relative; top: 1px; }
-  nav button:hover { color: var(--ink); }
-  nav button.active { color: var(--ink); border-bottom: 2px solid var(--ink); font-weight: 500; }
-  .nav-admin-tab { color: var(--gold) !important; display: none; }
-  .nav-admin-tab.show { display: inline-block; }
-  .nav-admin-tab.active { border-bottom: 2px solid var(--gold) !important; }
+.site-nav { display:flex; border-bottom:2px solid #0a0a0a; padding:0 48px; }
+.nav-btn { padding:14px 28px; background:none; border:none; border-bottom:3px solid transparent; margin-bottom:-2px; font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.15em; text-transform:uppercase; color:#666; cursor:pointer; transition:all 0.2s; }
+.nav-btn:hover { color:#0a0a0a; }
+.nav-btn.active { color:#1a6fd4; border-bottom-color:#1a6fd4; }
 
-  .search-bar { padding: 16px 48px; background: #0a1628; border-bottom: 3px solid #0a1628; display: flex; gap: 12px; align-items: center; }
-  .search-wrap { flex: 1; position: relative; }
-  .search-wrap input { width: 100%; padding: 10px 16px 10px 40px; border: 2px solid #4a6fa5; background: #ffffff; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 14px; color: #0a1628; outline: none; transition: border-color 0.2s; border-radius: 2px; }
-  .search-wrap input:focus { border-color: #ffffff; box-shadow: 0 0 0 2px #4a90d9; }
-  .search-wrap input::placeholder { color: var(--ink-faint); }
-  .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #4a6fa5; }
-  .search-btn { padding: 10px 24px; background: var(--ink); color: var(--paper); border: none; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; }
-  .search-btn:hover { background: var(--ink-mid); }
-  .clear-btn { padding: 10px 16px; background: none; color: #a0b8d8; border: 1.5px solid #4a6fa5; font-family: 'DM Mono', monospace; font-size: 11px; cursor: pointer; transition: all 0.2s; display: none; border-radius: 2px; }
-  .clear-btn:hover { border-color: #ffffff; color: #ffffff; }
-  .clear-btn.visible { display: block; }
+.page { display:none; padding:48px; }
+.page.active { display:block; }
 
-  main { max-width: 1200px; margin: 0 auto; padding: 40px 48px 80px; }
-  .section-header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 28px; padding-bottom: 10px; border-bottom: var(--rule-mid); flex-wrap: wrap; }
-  .section-header h2 { font-family: 'Helvetica Neue', Arial, sans-serif; font-weight: 900; font-size: 26px; font-weight: 700; color: var(--ink); }
-  .section-header .count { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--ink-faint); letter-spacing: 0.05em; }
+.year-section { margin-bottom:48px; }
+.year-label { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.3em; text-transform:uppercase; color:#444; padding-bottom:12px; border-bottom:2px solid #0a0a0a; margin-bottom:0; }
 
-  .year-section { margin-bottom: 56px; }
-  .year-label { font-family: 'Helvetica Neue', Arial, sans-serif; font-weight: 900; font-size: 42px; color: #000000; line-height: 1; margin-bottom: 16px; letter-spacing: -1px; }
-  .pdf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; align-items: stretch; }
-  .pdf-card { background: linear-gradient(160deg, #9bbdd8 0%, #2a5a8a 100%); border: none; border-radius: 12px; padding: 20px; padding-bottom: 0; transition: all 0.25s; position: relative; display: flex; flex-direction: column; height: 280px; box-shadow: 0 2px 8px rgba(0,0,0,0.10), 0 1px 3px rgba(0,0,0,0.08); overflow: hidden; cursor: pointer; }
-  .pdf-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.14), 0 2px 6px rgba(0,0,0,0.10); }
-  .pdf-card .issue-date { font-family: 'DM Mono', monospace; font-size: 11px; color: #ffffff; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; font-weight: 700; opacity: 0.85; }
-  .pdf-card .issue-title { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 14px; font-weight: 700; color: #ffffff; line-height: 1.4; margin-bottom: 2px; }
-  .pdf-card .issue-author { font-family: 'DM Mono', monospace; font-size: 11px; color: #1a3a6b; letter-spacing: 0.04em; margin-bottom: 8px; font-style: italic; }
-  .pdf-card .issue-subtitle { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 14px; color: #ffffff; margin-bottom: 6px; font-style: normal; margin-top: 4px; font-weight: 700; }
-  .pdf-card .issue-topics { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
-  .topic-tag { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 7px; background: var(--paper); border: 1px solid var(--paper-rule); color: var(--ink-light); }
-  .topic-tag.highlighted { background: #dceaf8; border-color: #4a90d9; color: var(--gold-light); }
-  .dl-link { display: flex; align-items: center; justify-content: center; gap: 6px; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 12px; font-weight: 700; color: #ffffff; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; transition: all 0.2s; cursor: pointer; background: rgba(0,0,0,0.35); border: none; border-top: 2px solid rgba(255,255,255,0.4); padding: 12px 0; width: 100%; margin-top: auto; }
-  .dl-link:hover { background: rgba(0,0,0,0.55); color: #ffffff; }
-  .dl-link svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; flex-shrink: 0; }
-  .card-admin-actions { display: none; gap: 6px; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--paper-rule); }
-  .card-admin-actions.show { display: flex; }
-  .card-edit-btn, .card-del-btn { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 8px; cursor: pointer; border: 1px solid; transition: all 0.2s; background: none; }
-  .card-edit-btn { border-color: var(--ink-faint); color: var(--ink-light); }
-  .card-edit-btn:hover { border-color: var(--ink-mid); color: var(--ink); }
-  .card-del-btn { border-color: #e0b0b0; color: var(--red); }
-  .card-del-btn:hover { background: #eef4ff; }
+.item { border-bottom:1px solid #ddd; }
+.item-row { display:grid; grid-template-columns:48px 1fr auto; align-items:start; padding:18px 16px; gap:20px; cursor:pointer; transition:background 0.15s; user-select:none; }
+.item-row:hover { background:#f0f6ff; }
+.item.open > .item-row { background:#f0f6ff; }
+.item-num { font-family:'DM Mono',monospace; font-size:13px; color:#bbb; text-align:center; padding-top:2px; }
+.item.open > .item-row .item-num { color:#1a6fd4; }
+.item-info { min-width:0; }
+.item-title { font-size:16px; font-weight:600; color:#0a0a0a; margin-bottom:3px; }
+.item-row:hover .item-title { color:#1a6fd4; }
+.item.open > .item-row .item-title { color:#1a6fd4; }
+.item-divider { border:none; border-top:1px solid #ddd; margin:5px 0; }
+.item-sub { font-size:14px; font-weight:400; color:#333; }
+.item-topics { display:flex; flex-wrap:wrap; gap:4px; margin-top:8px; }
+.topic-tag { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.08em; text-transform:uppercase; padding:3px 8px; background:#f0f0f0; color:#444; border:1px solid #ddd; }
+.item-meta { display:flex; flex-direction:column; align-items:flex-end; gap:6px; flex-shrink:0; }
+.item-date { font-family:'DM Mono',monospace; font-size:11px; color:#555; white-space:nowrap; }
+.item-chevron { font-size:12px; color:#bbb; transition:transform 0.25s; }
+.item.open > .item-row .item-chevron { transform:rotate(180deg); color:#1a6fd4; }
 
-  .topic-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
-  .topic-card { border: 1px solid var(--paper-rule); background: var(--paper-warm); overflow: hidden; cursor: pointer; transition: all 0.2s; }
-  .topic-card:hover { border-color: var(--ink-mid); }
-  .topic-card-head { padding: 16px 18px 12px; border-bottom: 1px solid var(--paper-rule); background: var(--paper); }
-  .topic-card-head h3 { font-family: 'Helvetica Neue', Arial, sans-serif; font-weight: 900; font-size: 18px; font-weight: 700; color: var(--ink); }
-  .topic-card-head .topic-count { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ink-faint); margin-top: 2px; }
-  .topic-card-body { padding: 12px 18px 14px; }
-  .topic-card-body ul { list-style: none; }
-  .topic-card-body li { font-size: 13px; color: var(--ink-mid); padding: 4px 0; border-bottom: 1px dashed var(--paper-rule); font-family: 'Helvetica Neue', Arial, sans-serif; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: color 0.15s; }
-  .topic-card-body li:last-child { border-bottom: none; }
-  .topic-card-body li:hover { color: var(--ink); }
-  .topic-card-body li span { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ink-faint); }
+.item-panel { display:none; padding:0 16px 24px 84px; background:#f0f6ff; border-top:1px solid #d0e4f8; }
+.item.open > .item-panel { display:block; }
+.item-synopsis { font-size:14px; color:#333; line-height:1.75; margin-bottom:16px; padding-top:16px; border-left:3px solid #1a6fd4; padding-left:16px; }
+.item-match { background:#fff3b0; padding:12px 16px; margin-bottom:12px; border-left:3px solid #f0a500; font-size:13px; color:#333; line-height:1.7; margin-top:16px; }
+.item-match-label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:#f0a500; margin-bottom:6px; }
+mark { background:#fff176; color:#0a0a0a; padding:1px 2px; border-radius:2px; }
+.item-dl { display:inline-flex; align-items:center; gap:8px; background:#0a0a0a; color:#fff; padding:10px 20px; font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; border:none; transition:background 0.2s; }
+.item-dl:hover { background:#1a6fd4; }
 
-  .result-item { padding: 18px 0; border-bottom: var(--rule-thin); display: grid; grid-template-columns: 120px 1fr; gap: 20px; align-items: start; }
-  .result-meta { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ink-faint); letter-spacing: 0.05em; text-transform: uppercase; line-height: 1.7; word-break: break-word; }
-  .result-year { font-size: 22px; font-family: 'Helvetica Neue', Arial, sans-serif; font-weight: 900; color: var(--ink-mid); font-weight: 700; display: block; letter-spacing: 0; text-transform: none; margin-bottom: 2px; }
-  .result-content h3 { font-family: 'Helvetica Neue', Arial, sans-serif; font-weight: 900; font-size: 18px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
-  .result-content h3 mark { background: #ffe033; color: var(--ink); padding: 0 2px; font-weight: inherit; }
-  .result-content p { font-size: 13.5px; color: var(--ink-mid); line-height: 1.65; margin-bottom: 10px; }
-  .result-content p mark { background: #ffe033; color: var(--ink); padding: 0 2px; }
-  .no-results { padding: 60px 0; text-align: center; color: var(--ink-faint); font-family: 'Helvetica Neue', Arial, sans-serif; font-weight: 900; font-size: 20px; font-style: italic; }
+.topic-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:2px; margin-bottom:48px; }
+.topic-btn { padding:20px 24px; background:#f5f5f5; border:none; text-align:left; cursor:pointer; transition:all 0.2s; border-left:4px solid transparent; width:100%; }
+.topic-btn:hover { background:#f0f6ff; border-left-color:#1a6fd4; }
+.topic-btn:hover .topic-name { color:#1a6fd4; }
+.topic-name { font-size:15px; font-weight:600; color:#0a0a0a; margin-bottom:4px; transition:color 0.2s; }
+.topic-count { font-family:'DM Mono',monospace; font-size:11px; color:#666; }
 
-  /* ── ADMIN PANEL ── */
-  .admin-bar { display: none; background: #eaf2fb; border: 2px dashed var(--gold-light); padding: 14px 48px; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--ink-mid); letter-spacing: 0.05em; align-items: center; gap: 20px; }
-  .admin-bar.visible { display: flex; }
-  .admin-bar strong { color: var(--gold-light); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
-  .admin-bar-actions { display: flex; gap: 10px; margin-left: auto; align-items: center; }
-  .admin-action-btn { background: none; border: 1px solid var(--ink-faint); color: var(--ink-light); font-family: 'DM Mono', monospace; font-size: 10px; padding: 5px 14px; cursor: pointer; letter-spacing: 0.08em; text-transform: uppercase; transition: all 0.2s; }
-  .admin-action-btn:hover { border-color: var(--gold-light); color: var(--gold-light); }
-  .admin-logout { background: none; border: 1px solid #e0b0b0; color: var(--red); font-family: 'DM Mono', monospace; font-size: 10px; padding: 5px 14px; cursor: pointer; letter-spacing: 0.08em; text-transform: uppercase; transition: all 0.2s; }
-  .admin-logout:hover { background: #eef4ff; }
+.topic-filter-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:32px; padding-bottom:16px; border-bottom:2px solid #0a0a0a; }
+.topic-filter-title { font-size:22px; font-weight:700; }
+.topic-filter-title span { color:#1a6fd4; }
+.topic-clear { font-family:'DM Mono',monospace; font-size:11px; color:#666; cursor:pointer; border:1px solid #ddd; padding:6px 14px; background:none; transition:all 0.2s; }
+.topic-clear:hover { border-color:#0a0a0a; color:#0a0a0a; }
 
-  /* ── ADMIN DASHBOARD VIEW ── */
-  .admin-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-bottom: 36px; }
-  .stat-card { background: var(--paper-warm); border: 1px solid var(--paper-rule); padding: 18px 20px; }
-  .stat-card .stat-num { font-family: 'Helvetica Neue', Arial, sans-serif; font-weight: 900; font-size: 36px; font-weight: 900; color: var(--ink); line-height: 1; }
-  .stat-card .stat-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ink-faint); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 4px; }
-
-  /* ── UPLOAD FORM ── */
-  .upload-zone { border: 2px dashed var(--paper-rule); background: var(--paper-warm); padding: 36px; text-align: center; cursor: pointer; transition: all 0.25s; margin-bottom: 28px; position: relative; }
-  .upload-zone:hover, .upload-zone.drag-over { border-color: #4a90d9; background: #dceaf8; }
-  .upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
-  .upload-zone .uz-icon { font-size: 32px; color: var(--ink-faint); margin-bottom: 10px; }
-  .upload-zone .uz-title { font-family: 'Helvetica Neue', Arial, sans-serif; font-weight: 900; font-size: 17px; font-weight: 700; color: var(--ink-mid); margin-bottom: 4px; }
-  .upload-zone .uz-sub { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ink-faint); letter-spacing: 0.06em; text-transform: uppercase; }
-  .upload-zone.has-file { border-color: #1a6a3a; background: #f0f7fb; }
-  .upload-zone.has-file .uz-icon { color: #1a6a3a; }
-  .upload-zone.extracting { border-color: #4a90d9; background: #f0f6ff; cursor: wait; }
-  .upload-zone.extracting .uz-icon { color: var(--gold-light); }
-  .extract-progress { height: 3px; background: var(--paper-rule); margin-top: 8px; border-radius: 2px; overflow: hidden; display: none; }
-  .extract-progress.show { display: block; }
-  .extract-bar { height: 100%; background: var(--gold); width: 0%; transition: width 0.3s ease; }
-  .fulltext-note { font-family: 'DM Mono', monospace; font-size: 10px; color: #1a6a3a; letter-spacing: 0.05em; margin-top: 6px; display: none; }
-  .fulltext-note.show { display: block; }
-
-  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px; }
-  .form-grid.three { grid-template-columns: 1fr 1fr 1fr; }
-  .field { display: flex; flex-direction: column; gap: 6px; }
-  .field label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-light); }
-  .field input, .field select, .field textarea { padding: 9px 12px; border: 1.5px solid var(--paper-rule); background: var(--paper-warm); font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 13.5px; color: var(--ink); outline: none; transition: border-color 0.2s; resize: vertical; }
-  .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--ink-mid); }
-  .field input::placeholder, .field textarea::placeholder { color: var(--ink-faint); }
-  .field select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23b8a88a'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
-
-  .topics-picker { display: flex; flex-wrap: wrap; gap: 8px; }
-  .topic-pill { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; padding: 5px 12px; border: 1px solid var(--paper-rule); background: var(--paper); color: var(--ink-light); cursor: pointer; transition: all 0.15s; user-select: none; }
-  .topic-pill:hover { border-color: var(--ink-mid); color: var(--ink); }
-  .topic-pill.selected { background: var(--ink); color: var(--paper); border-color: var(--ink); }
-
-  .form-actions { display: flex; gap: 12px; align-items: center; margin-top: 24px; padding-top: 20px; border-top: var(--rule-thin); }
-  .btn-submit { padding: 12px 32px; background: var(--ink); color: var(--paper); border: none; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; }
-  .btn-submit:hover { background: var(--ink-mid); }
-  .btn-submit.saving { background: var(--green); }
-  .btn-cancel { padding: 12px 20px; background: none; color: var(--ink-light); border: 1.5px solid var(--paper-rule); font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
-  .btn-cancel:hover { border-color: var(--ink-mid); color: var(--ink); }
-  .form-msg { font-family: 'DM Mono', monospace; font-size: 11px; padding: 8px 14px; display: none; }
-  .form-msg.success { background: #eef4ff; border: 1px solid #90b8e0; color: #1a6a3a; display: block; }
-  .form-msg.error { background: #eef4ff; border: 1px solid #e0b0b0; color: var(--red); display: block; }
-
-  /* ── MANAGE TABLE ── */
-  .manage-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 8px; }
-  .manage-table th { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); padding: 8px 12px; border-bottom: var(--rule-mid); text-align: left; white-space: nowrap; }
-  .manage-table td { padding: 12px 12px; border-bottom: var(--rule-thin); color: var(--ink-mid); vertical-align: top; }
-  .manage-table tr:hover td { background: var(--paper-warm); }
-  .manage-table .col-title { font-family: 'Helvetica Neue', Arial, sans-serif; color: var(--ink); font-size: 13.5px; }
-  .manage-table .col-date { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ink-faint); white-space: nowrap; }
-  .manage-table .col-file { font-family: 'DM Mono', monospace; font-size: 10px; color: #1a6a3a; }
-  .manage-table .col-file.no-file { color: var(--red); }
-  .manage-table .row-actions { display: flex; gap: 6px; }
-  .tbl-btn { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.05em; text-transform: uppercase; padding: 3px 8px; cursor: pointer; border: 1px solid; transition: all 0.15s; background: none; white-space: nowrap; }
-  .tbl-edit { border-color: var(--ink-faint); color: var(--ink-light); }
-  .tbl-edit:hover { border-color: var(--ink-mid); color: var(--ink); }
-  .tbl-del { border-color: #e0b0b0; color: var(--red); }
-  .tbl-del:hover { background: #eef4ff; }
-  .tbl-badge { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.05em; text-transform: uppercase; padding: 2px 6px; background: var(--paper); border: 1px solid var(--paper-rule); color: var(--ink-light); margin-right: 3px; }
-
-  /* ── MODAL ── */
-  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(26,18,9,0.6); z-index: 1000; align-items: center; justify-content: center; }
-  .modal-overlay.open { display: flex; }
-  .modal { background: var(--paper); border: 1px solid var(--paper-rule); padding: 36px 40px; width: 420px; position: relative; box-shadow: 0 8px 40px rgba(26,18,9,0.25); }
-  .modal::before { content: ''; display: block; height: 4px; background: linear-gradient(to right, var(--ink) 0%, var(--ink) 40%, var(--gold-light) 40%, var(--gold-light) 60%, var(--ink) 60%, var(--ink) 100%); position: absolute; top: 0; left: 0; right: 0; }
-  .modal h3 { font-family: 'Helvetica Neue', Arial, sans-serif; font-weight: 900; font-size: 22px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
-  .modal .modal-sub { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--ink-faint); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 24px; }
-  .modal label { display: block; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 6px; }
-  .modal input[type="password"] { width: 100%; padding: 10px 14px; border: 1.5px solid var(--paper-rule); background: var(--paper-warm); font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 14px; color: var(--ink); outline: none; margin-bottom: 20px; transition: border-color 0.2s; }
-  .modal input[type="password"]:focus { border-color: var(--ink-mid); }
-  .modal-error { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--red); margin-top: -14px; margin-bottom: 14px; display: none; }
-  .modal-error.visible { display: block; }
-  .modal-btns { display: flex; gap: 10px; }
-  .btn-primary { flex: 1; padding: 11px; background: var(--ink); color: var(--paper); border: none; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; }
-  .btn-primary:hover { background: var(--ink-mid); }
-  .btn-secondary { padding: 11px 18px; background: none; color: var(--ink-light); border: 1.5px solid var(--paper-rule); font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
-  .btn-secondary:hover { border-color: var(--ink-mid); color: var(--ink); }
-  .modal-close { position: absolute; top: 16px; right: 16px; background: none; border: none; cursor: pointer; color: var(--ink-faint); font-size: 18px; line-height: 1; transition: color 0.2s; }
-  .modal-close:hover { color: var(--ink); }
-
-  /* confirm delete modal */
-  .confirm-modal { width: 360px; }
-  .confirm-modal p { font-size: 14px; color: var(--ink-mid); line-height: 1.6; margin-bottom: 22px; }
-  .confirm-modal .issue-name { font-family: 'Helvetica Neue', Arial, sans-serif; font-weight: 900; font-style: italic; color: var(--ink); }
-
-  .view-section { display: none; }
-  .view-section.active { display: block; }
-
-  footer { border-top: var(--rule-thick); padding: 24px 48px; display: flex; justify-content: space-between; align-items: center; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ink-faint); letter-spacing: 0.05em; background: var(--paper-warm); }
-  .footer-title { font-family: 'Helvetica Neue', Arial, sans-serif; font-weight: 900; font-size: 16px; font-weight: 700; color: var(--ink-mid); letter-spacing: 0; }
-
-  @media (max-width: 768px) {
-    .masthead-top, nav, main, .search-bar, footer, .admin-bar { padding-left: 20px; padding-right: 20px; }
-    .title-main { font-size: 46px; }
-    nav { flex-wrap: wrap; }
-    .result-item { grid-template-columns: 1fr; gap: 4px; }
-    .form-grid, .form-grid.three { grid-template-columns: 1fr; }
-  }
+.results-header { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.15em; text-transform:uppercase; color:#666; margin-bottom:24px; padding-bottom:12px; border-bottom:2px solid #0a0a0a; }
+.results-header b { color:#1a6fd4; }
+.no-results { padding:48px; text-align:center; color:#aaa; font-size:16px; }
 </style>
 </head>
 <body>
 
-<header class="masthead">
-  <div class="masthead-top" style="justify-content:flex-end;border-bottom:none;padding-bottom:4px;">
-    <span id="today-date" style="display:none;"></span>
-    <button class="admin-btn" id="adminLoginBtn" onclick="openAdminModal()">⌂ Admin Login</button>
+<div class="site-header">
+  <div class="header-left">
+    <div class="logo-eyebrow">Global Missions Inc. · Newsletter Archive</div>
+    <div class="logo-title" onclick="showPage('browse')">The Sharon <span>Star</span></div>
   </div>
-  <div class="masthead-center">
-    <a href="#" onclick="switchView('browse', document.getElementById('browseNavBtn')); return false;" title="Return to home" style="display:block;text-align:center;"><img src="data:image/png;base64,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" alt="The Sharon Star" style="max-height:100px;max-width:600px;width:90%;display:block;margin:0 auto;"></a>
-    
-  </div>
-  <div class="masthead-rule"></div>
-</header>
-
-<div class="admin-bar" id="adminBar">
-  <strong>★ Admin Mode</strong>
-  <span id="adminIssueCount"></span>
-  <div class="admin-bar-actions">
-    <button class="admin-action-btn" onclick="switchView('admin', document.getElementById('adminNavTab'))">Manage Archive</button>
-    <button class="admin-logout" onclick="logoutAdmin()">Log Out</button>
+  <div class="header-right">
+    <input class="search-input" id="searchInput" type="text" placeholder="Search all issues — try 'resurrection', 'faith', 'Holy Spirit'…">
+    <button class="search-btn" onclick="doSearch()">Search</button>
   </div>
 </div>
 
-<div class="search-bar">
-  <div class="search-wrap">
-    <span class="search-icon">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-    </span>
-    <input type="text" id="searchInput" placeholder="Search all issues — try 'resurrection', 'faith', 'Holy Spirit', 'prayer'…" oninput="onSearchInput()" onkeydown="if(event.key==='Enter') runSearch()">
-  </div>
-  <button class="search-btn" onclick="runSearch()">Search</button>
-  <button class="clear-btn" id="clearBtn" onclick="clearSearch()">✕ Clear</button>
-</div>
-
-<nav>
-  <button class="active" onclick="switchView('browse', this)">Browse by Year</button>
-  <button onclick="switchView('topics', this)">Browse by Topic</button>
-  <button onclick="switchView('search', this)" id="searchNavBtn">Search Results</button>
-  <button class="nav-admin-tab" id="adminNavTab" onclick="switchView('admin', this)">★ Manage Archive</button>
+<nav class="site-nav">
+  <button class="nav-btn active" id="nav-browse" onclick="showPage('browse')">Browse Archive</button>
+  <button class="nav-btn" id="nav-topics" onclick="showPage('topics')">Browse by Topic</button>
+  <button class="nav-btn" id="nav-search" style="display:none">Search Results</button>
 </nav>
 
-<main>
-
-  <div class="view-section active" id="view-browse">
-    <div class="section-header" id="browseHeader" style="border:none;margin-bottom:8px;">
-      <h2 id="browseHeading" style="display:none;"></h2>
-      <span class="count" id="totalCount"></span>
-    </div>
-    <div id="yearArchive"></div>
-  </div>
-
-  <div class="view-section" id="view-topics">
-    <div class="section-header">
-      <h2>Browse by Topic</h2>
-      <span class="count">9 categories</span>
-    </div>
-    <div class="topic-grid" id="topicGrid"></div>
-  </div>
-
-  <div class="view-section" id="view-search">
-    <div class="section-header">
-      <h2>Search Results</h2>
-      <span class="count" id="searchResultCount"></span>
-    </div>
-    <div id="searchResults"></div>
-  </div>
-
-  <!-- ADMIN DASHBOARD -->
-  <div class="view-section" id="view-admin">
-
-    <div class="section-header">
-      <h2>Manage Archive</h2>
-      <span class="count" id="adminHeadCount"></span>
-    </div>
-
-    <div class="admin-stats" id="adminStats"></div>
-
-    <!-- UPLOAD / EDIT FORM -->
-    <div style="background:var(--paper-warm);border:1px solid var(--paper-rule);padding:28px 32px;margin-bottom:40px;">
-      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:22px;padding-bottom:12px;border-bottom:var(--rule-thin);">
-        <h3 style="font-family:'Helvetica Neue', Arial, sans-serif; font-weight:900;font-size:20px;font-weight:700;color:var(--ink);" id="formHeading">Add New Issue</h3>
-        <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--ink-faint);" id="formEditingLabel"></span>
-      </div>
-
-      <div class="upload-zone" id="uploadZone">
-        <input type="file" id="pdfFileInput" accept=".pdf" onchange="onFileSelected(this)">
-        <div class="uz-icon" id="uzIcon">📄</div>
-        <div class="uz-title" id="uzTitle">Drop PDF here or click to browse</div>
-        <div class="uz-sub" id="uzSub">PDF files only · Max 50 MB</div>
-        <div class="extract-progress" id="extractProgress"><div class="extract-bar" id="extractBar"></div></div>
-      </div>
-      <div class="fulltext-note" id="fulltextNote">✓ Full text extracted — this issue's content is fully searchable</div>
-
-      <div class="form-grid three">
-        <div class="field">
-          <label>Month</label>
-          <select id="fMonth">
-            <option value="">Select month…</option>
-            <option>January</option><option>February</option><option>March</option>
-            <option>April</option><option>May</option><option>June</option>
-            <option>July</option><option>August</option><option>September</option>
-            <option>October</option><option>November</option><option>December</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Year</label>
-          <input type="number" id="fYear" placeholder="e.g. 2024" min="1987" max="2099">
-        </div>
-        <div class="field">
-          <label>Volume / Issue # <span style="font-size:9px;color:var(--ink-faint)">(optional)</span></label>
-          <input type="text" id="fVolume" placeholder="e.g. Vol. 37, No. 4">
-        </div>
-      </div>
-
-      <div class="form-grid" style="grid-template-columns:1fr;">
-        <div class="field">
-          <label>Issue Title / Headline</label>
-          <input type="text" id="fTitle" placeholder="e.g. Autumn Harvest Festival Recap">
-        </div>
-      </div>
-
-      <div class="form-grid" style="grid-template-columns:1fr;">
-        <div class="field">
-          <label>Summary / Excerpt <span style="font-size:9px;color:var(--ink-faint)">(shown in search results)</span></label>
-          <textarea id="fExcerpt" rows="3" placeholder="Brief summary of this issue's main stories…"></textarea>
-        </div>
-      </div>
-
-      <div class="field" style="margin-bottom:0;">
-        <label>Topics</label>
-        <div class="topics-picker" id="topicsPicker"></div>
-      </div>
-
-      <div class="form-msg" id="formMsg"></div>
-
-      <div class="form-actions">
-        <button class="btn-submit" id="submitBtn" onclick="submitIssue()">+ Add to Archive</button>
-        <button class="btn-cancel" id="cancelEditBtn" style="display:none" onclick="cancelEdit()">Cancel Edit</button>
-        <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--ink-faint);margin-left:8px;" id="formHint">Fill in all required fields and select a PDF to add an issue.</span>
-      </div>
-    </div>
-
-    <!-- MANAGE TABLE -->
-    <div>
-      <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;">
-        <h3 style="font-family:'Helvetica Neue', Arial, sans-serif; font-weight:900;font-size:20px;font-weight:700;color:var(--ink);">All Issues</h3>
-        <input type="text" id="manageSearch" placeholder="Filter issues…" oninput="renderManageTable()" style="padding:6px 12px;border:1.5px solid var(--paper-rule);background:var(--paper-warm);font-family:'Georgia',serif;font-size:13px;color:var(--ink);outline:none;margin-left:auto;width:220px;">
-      </div>
-      <div style="overflow-x:auto;">
-        <table class="manage-table" id="manageTable">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Title</th>
-              <th>Topics</th>
-              <th>PDF</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="manageTableBody"></tbody>
-        </table>
-      </div>
-    </div>
-
-  </div>
-</main>
-
-<!-- LOGIN MODAL -->
-<div class="modal-overlay" id="adminModal">
-  <div class="modal">
-    <button class="modal-close" onclick="closeAdminModal()">✕</button>
-    <h3>Admin Access</h3>
-    <p class="modal-sub">The Sharon Star Archive</p>
-    <label for="passwordInput">Password</label>
-    <input type="password" id="passwordInput" placeholder="Enter admin password" onkeydown="if(event.key==='Enter') checkPassword()">
-    <div class="modal-error" id="modalError">Incorrect password. Please try again.</div>
-    <div class="modal-btns">
-      <button class="btn-primary" onclick="checkPassword()">Sign In</button>
-      <button class="btn-secondary" onclick="closeAdminModal()">Cancel</button>
-    </div>
-  </div>
-</div>
-
-<!-- CONFIRM DELETE MODAL -->
-<div class="modal-overlay" id="confirmModal">
-  <div class="modal confirm-modal">
-    <button class="modal-close" onclick="closeConfirm()">✕</button>
-    <h3>Remove Issue?</h3>
-    <p class="modal-sub">This cannot be undone</p>
-    <p>Are you sure you want to remove <span class="issue-name" id="confirmIssueName"></span> from the archive?</p>
-    <div class="modal-btns" style="margin-top:22px;">
-      <button class="btn-primary" style="background:var(--red);" onclick="confirmDelete()">Remove Issue</button>
-      <button class="btn-secondary" onclick="closeConfirm()">Cancel</button>
-    </div>
-  </div>
-</div>
-
-<footer>
-  <span class="footer-title">The Sharon Star</span>
-  
-  <span>© 2024 The Sharon Star. All rights reserved.</span>
-</footer>
+<div class="page active" id="page-browse"></div>
+<div class="page" id="page-topics"></div>
+<div class="page" id="page-search"></div>
 
 <script>
-const MONTHS_ORDER = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-
 let ISSUES = [
   { id: 1, subtitle: "In Memoriam: Dickson Julius Olan'g", author: 'Brandon Snoke', year: 2025, month: 'January', volume: 'Vol. LXXVIII, No. 01', title: 'Practical Advice from the Bible', topics: ['Marriage & Family','Scripture','Prayer'], excerpt: "Brandon Snoke draws on a weekend in Ouray, Colorado to reflect on marriage as a gift from God with an operator's manual in Ephesians 5. The issue covers biblical instruction on marriage, stewardship, tithing, work, and prayer. Also features a tribute to Travelling Elder Dickson Julius Olan'g of Tanzania, who served faithfully across East, Central, and West Africa until his passing.", pdf: '01%20-%20Sharon%20Star%20-%20January%202025.pdf', fileName: '01_-_Sharon_Star_-_January_2025.pdf' , fullText: `Practical Advice from the Bible Brandon Snoke January 2025 Volume LXXVIII Issue 01 Ouray Colorado mountain town stream river of life Holy Spirit operator manual marriage Ephesians submit husbands wives reverence Christ head church savior body fidelity faithfulness love sacrifice submission become one 1 Peter considerate respect heirs gracious gift life Lewis Clark Corps Discovery Missouri River stewardship tithing work prayer Malachi windows heaven pour blessing devourer 2 Thessalonians Colossians work heart Lord Ecclesiastes Solomon labor gift God George Washington Carver slavery abolition labor honorable brick maker Luke 18 unjust judge widow pray faint faith earth John 10 thief steal kill destroy life abundantly Dickson Julius Olan'g Tanzania Kenya Uganda DR Congo Ghana East Africa Central Africa West Africa Travelling Elder Bunda Lake Victoria Serengeti churches flourished injury walking faithful 2 Timothy 4 Lord stood strengthened message proclaimed rescued lion mouth heavenly kingdom glory Tunakupenda Bwana asifiwe Global Missions Inc North Battleford Saskatchewan Canada founded 1944 nondenominational Christian church Africa India Caribbean Philippines` },
   { id: 2, subtitle: 'Fit for Purpose: Junior Thompson', author: 'Andy Snoke', year: 2025, month: 'February', volume: 'Vol. LXXVIII, No. 02', title: 'Citizens of Heaven', topics: ['Scripture','Discipleship','Holy Spirit'], excerpt: "Andy Snoke explores Philippians 3:20 — our citizenship is in heaven — drawing on the Roman colony of Philippi as a model for living as heavenly citizens on earth. Junior Thompson adds a message on being Fit for Purpose, examining how God calls and equips believers through the Holy Spirit, spiritual gifts, and grace. Includes the Letter to Diognetus from the 2nd century describing early Christian life.", pdf: '02%20-%20Sharon%20Star%20-%20February%202025.pdf', fileName: '02_-_Sharon_Star_-_February_2025.pdf' , fullText: `Citizens of Heaven Andy Snoke February 2025 Volume LXXVIII Issue 02 Philippians 3:20 citizenship heaven Philippi Roman colony Macedonia Rome far away believers laws traditions bread salvation forgiveness blood cross eternal citizenship death false teachers Libertine discarding moral laws human wisdom denying transforming power gospel legalism earthly sensual belly worldly Colossians seek things above right hand God put to death fornication uncleanness passion evil desire covetousness anger wrath malice blasphemy filthy language new man renewed knowledge elect God holy beloved tender mercies kindness humility meekness longsuffering forgiving love bond perfection peace thankful word Christ psalms hymns spiritual songs Letter to Diognetus second century Christians indistinguishable nationality language customs passing through citizens heaven obedient laws poverty enrich dishonor glory defamed vindicated blessing abuse deference insult soul body 1 John 2:15 do not love world lust flesh lust eyes pride life passing away sin farther longer cost Fit for Purpose Junior Thompson Romans predestinate called justified glorified gifts irrevocable Holy Spirit spiritual gifts presbytery laying hands 1 Corinthians diversities gifts Philippians press toward mark prize high calling God in Christ Jesus living stones royal priesthood Proverbs man's gift makes room great men grace fitted purpose` },
@@ -443,517 +118,173 @@ let ISSUES = [
   { id: 13, author: 'DJ Olson', year: 2026, month: 'April/May', volume: 'Vol. LXXIX, No. 03', title: 'The Golgotha Testament', topics: ['Salvation','Scripture','Prophecy'], excerpt: "DJ Olson walks through the final hours of Christ from Gethsemane to Calvary — the betrayal by Judas, Pilate's judgment, the soldiers' mockery, and the crucifixion — then examines each of the seven last words of Jesus from the cross. Father forgive them, the promise to the thief, care for Mary, the cry of forsakenness, I thirst, It is finished, and Into thy hands I commend my spirit — a complete testament of forgiveness, redemption, and resurrection hope.", pdf: '03%20-%20Sharon%20Star%20-%20April-May%202026.pdf', fileName: '03_-_Sharon_Star_-_April-May_2026.pdf' , fullText: `The Golgotha Testament DJ Olson April May 2026 Volume LXXIX Issue 03 outside walls ancient Jerusalem Golgotha Calvary Place of the Skull barren stony ridge holes hewn rock men hoisted upon crosses forced upright into stone place of hopelessness stark reminder mortality wickedness world met most remarkable defeat Christ hung upon cross stage victory far greater any earthly triumph shadows city walls one Man bore weight world's sin earth itself stood witness depth of His suffering Isaiah 52:14 appearance so disfigured beyond any human being form marred beyond human likeness seven centuries before words from cross not cries of defeat enduring words Son of God revealed true victory death Christ rough blood-stained tree world looked like end failed cause very means by which sin was conquered death undone eternal hope secured all who believe unlike those early disciples we are granted privilege knowing whole account beginning to end do not see everything clearly much eternity remains veiled faith steadfast anchor not because what eyes see but faith in One who has spoken promised whose word will not fail know Him hands destiny all things Garden of Gethsemane quiet shadow olive trees Jesus withdrew pray heart heavy O my Father if it be possible let this cup pass from me nevertheless not as I will but as thou wilt Matthew 26:39 disciples slept unable grasp gravity moment sweat fell drops of blood testimony anguish resolve Luke 22:44 agony prayed more earnestly sweat became like great drops of blood falling down to ground obedience love rose accepting path cross Judas band of soldiers identifying Jesus with a kiss whomever I kiss seize him Greetings Rabbi kissed him Matthew 26:48-49 betrayal Peter drew sword attacked soldiers Jesus intervened Peter smote servant high priest cut off right ear Jesus answered suffer thus far touched his ear healed him Luke 22:50-51 even Judas stricken remorse sought undo treachery path cross could not be turned aside Pilate Roman governor Jesus stood silent unyielding fury accusations Art thou King of Jews Jesus said Thou sayest Matthew 27:11 chief priests elders clamored Jesus silence thunderous answered nothing Matthew 27:12 feast custom dictated one prisoner released Barabbas notorious criminal Jesus innocent Christ Pilate's wife troubled dream Have thou nothing to do with that just man suffered many things day in a dream Matthew 27:19 chief priests elders persuaded multitudes Barabbas destroy Jesus governor answered which two do you want me to release Barabbas Matthew 27:20-21 Why what evil hath he done Matthew 27:23 Pilate washed hands before multitude innocent blood of this just person see ye to it Matthew 27:24 His blood be on us and on our children Matthew 27:25 Jesus scourged sent to cross Barabbas notorious murderer set free soldiers spat upon Jesus struck mocked cruel laughter robe of scorn crown of thorns reed right hand bowed knee mocked Hail King of the Jews spit upon took reed smote him on head after mocked took robe off put his own raiment led away crucify Matthew 27:29-31 Simon of Cyrene compelled bear cross Mark 15:21 Golgotha bitter wine mingled with gall offered Jesus refused vinegar common low grade sour wine mixed bitter element crude pain dulling drink Jesus tastes refuses deliberate choice endure suffering fully Matthew 27:34 nails driven through hands feet garments divided cast lots fulfilling Scripture Psalm 22:18 John 19:23-24 sign above JESUS OF NAZARETH THE KING OF THE JEWS John 19:19 two criminals hung beside Him one mocked other believed penitent thief promise of paradise Lord remember me when thou comest into thy kingdom Verily I say unto thee today shalt thou be with me in paradise Luke 23:42-43 crowd taunted If thou be Son of God come down from cross Matthew 27:40 turning point history Christ died darkness noon till three sixth hour ninth hour Mark 15:33 Jewish timekeeping temple veil torn two from top to bottom earth quaked rocks split Matthew 27:51 saints rose from grave many bodies saints fallen asleep raised coming out of graves after resurrection went into holy city appeared to many Matthew 27:52 centurion those around suddenly convinced truly this was the Son of God Matthew 27:54 final words spoken Christ from cross Testament of Golgotha Father forgive them for they do not know what they do Luke 23:34 first words from cross not cry for relief not protest innocence prayer forgiveness others grip of agony thoughts not of Himself but of us gazed those who driven nails mocked reviled divine love not demand justice but grace Matthew 6:14-15 if you forgive men trespasses heavenly Father will also forgive you if you do not forgive men trespasses neither will your Father forgive your trespasses embodied words cross Father forgive them for they know not what they do no guilt so heavy no past so dark first words from Calvary cannot cover it forgiveness spoken in suffering mercy made all more powerful complete Assuredly I say to you today you will be with Me in Paradise Luke 23:43 hope to man weighed down lifetime failure crime thief confessed guilt turned in faith Lord offers not condemnation promise of eternity though mortal life remained died cross faith rewarded life everlasting declaration no past beyond redemption no sin beyond pardon met with repentance and trust Woman behold thy son Behold thy mother John 19:26-27 suffering Jesus turns gaze not inward but outward attending needs those He loved entrusts care His mother to His beloved disciple solemn reminder bonds human care endure beyond death in Christ's kingdom called bear one another's burdens carry one another's hopes My God my God why hast thou forsaken me Matthew 27:46 not cry man merely suffering but Christ shouldering unfathomable weight world's sin fully human fully divine experienced depth abandonment suffering bore full separation from God that sin causes spiritually God was not abandoning Son but separation necessary Jesus fulfill role sin-bearer for humanity 2 Corinthians 5:21 made Him who knew no sin to be sin for us that we might become righteousness of God in Him voice of prophecy fulfilled purpose pursued through suffering meeting divine and broken hour when price of salvation was measured and fully paid I thirst John 19:28 fully human John 4 woman at Samaritan well Give me to drink physical thirst doorway deeper truth soul's longing eternal life I shall give him shall never thirst Jesus presents Himself source of living water satisfy soul forever cross I thirst not merely physical agony echo spiritual desolation He who once offered water of life now suffers thirst emptied forsaken bearing full weight of sin at well Jesus offers quench thirst of soul on cross He endures thirst Himself so we never have to vivid glimpse true humanity endured pain bled thirsted no shadow of reality God became man endured everything for us It is finished John 19:30 fully God completion work of salvation debt of sin paid death defeated God's plan redemption fulfilled nothing more needs to be added Christ's atonement perfect complete final eternal plan salvation set before foundation of world Revelation 13:8 sacrifice sufficient all sin all time Hebrews 10:12-14 divine authority sealing work redemption Son of Man lived perfect obedience under Law Galatians 4:4 enduring suffering temptation death without sin Hebrews 4:15 bore our griefs carried our sorrows Isaiah 53:4-6 completing human side mission prophetic requirements fulfilled Father into thy hands I commend my spirit Luke 23:46 final words Savior places trust entirely hands Father calm resolute faith surrenders life yielding to death unyielding in purpose did not fall into death stepped into it not victim overtaken but Son obedient to very end no collapse no cry of defeat deliberate yielding life wholly given ultimate act obedience surrender faith demonstration perfect confidence loving Father who would raise Him from dead prayer forgiveness those who harmed Him promise paradise repentant thief tender care mother cry of forsakenness bore our sin declaration thirst solemn announcement It is finished final surrender Father's hands proclaim completion journey conquers death opens door eternal life Triumph of Calvary prayer lifeline Father sustained Son darkest hours Gethsemane to Calvary communion God source strength resolve fulfill redemptive plan prayers not merely pleas but acts obedience trust shaping very path to victory believers cross not end beginning new covenant new creation promise everlasting life crucifixion Jesus solemn fulfillment prophecies spoken centuries before birth steadfast prayers obedience God's own Son calls us people of prayer prophecy reached its fulfillment on Calvary promises His return gift eternal life realized prayers faithful resurrection Jesus ultimate declaration hope renewal death could not hold Him grave could not contain Him rising from dead Christ reveals God's power transcends all fear overcomes every failure triumphs every sorrow stretches far beyond human understanding life conquers death light dispels darkness God's love endures unshakably not merely historical event living reality Romans 8:38-39 persuaded neither death nor life nor angels nor principalities nor powers nor things present nor things to come nor height nor depth nor any other creature shall be able to separate us from love God which is in Christ Jesus our Lord Christ rose from grave repent receive forgiveness walk light God's kingdom bear witness carry His truth ends of earth Scripture is fulfilled hope is revealed death is defeated grave could not hold Him message salvation continues until all have heard called to readiness covenant sealed by His blood shaped by cross once symbol of death now sign of salvation and hope Galatians 2:20 crucified with Christ no longer I live Christ lives in me life now live in flesh live by faith Son of God loved me gave Himself for me Church stands threshold history called proclaim crucified Savior steadfast unity joyful hope His return dwell forever splendor God's eternal Kingdom Even so come Lord Jesus Revelation 22:20 ten thousand times ten thousand thousands of thousands saying with a loud voice Worthy is the Lamb who was slain to receive power and riches and wisdom and strength and honor and glory and blessing every creature heaven earth under earth sea all that are in them Blessing and honor and glory and power be to Him who sits on throne and to the Lamb forever and ever Revelation 5:11-13` },
 ];
 
-const ALL_TOPICS = ['Scripture','Faith','Salvation','Holy Spirit','Prayer','Discipleship','Prophecy','Marriage & Family','Evangelism','Apologetics','Christmas','Youth & Family','Church'];
-const TOPIC_META = {
-  Scripture: { icon: '✦', color: '#1a3a6b', desc: "Bible teaching, study, and exposition" },
-  Faith: { icon: '✝', color: '#1565c0', desc: "Trust, belief, and the walk of faith" },
-  Salvation: { icon: '◆', color: '#8b1a1a', desc: "The gospel, redemption, and eternal life" },
-  'Holy Spirit': { icon: '◈', color: '#1a5a3a', desc: "The person and work of the Holy Spirit" },
-  Prayer: { icon: '◉', color: '#3a1a5a', desc: "Intercession, petition, and communion with God" },
-  Discipleship: { icon: '◧', color: '#1a4a5a', desc: "Following Christ and growing in faith" },
-  Prophecy: { icon: '◍', color: '#5a4a1a', desc: "Fulfilled prophecy and the plans of God" },
-  'Marriage & Family': { icon: '◑', color: '#5a1a3a', desc: "Biblical teaching on marriage and family" },
-  Evangelism: { icon: '◐', color: '#1a5a1a', desc: "Sharing the gospel and reaching the lost" },
-  Apologetics: { icon: '▣', color: '#2a1a5a', desc: "Evidence and defense of the Christian faith" },
-  Christmas: { icon: '✧', color: '#1a3a5a', desc: "The birth of Christ and Advent season" },
-  'Youth & Family': { icon: '◌', color: '#3a5a1a', desc: "Teaching for young people and families" },
-  Church: { icon: '⊕', color: '#5a3a1a', desc: "The body of Christ and local church life" },
+// Find matching sentence from fullText
+function getMatchSnippet(text, query) {
+  if (!text || !query) return '';
+  var ql = query.toLowerCase();
+  var words = text.split(/[.!?]+/);
+  for (var i = 0; i < words.length; i++) {
+    if (words[i].toLowerCase().indexOf(ql) !== -1) {
+      var sentence = words[i].trim();
+      if (sentence.length > 20) {
+        // Highlight the match
+        var re = new RegExp('(' + query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+        return sentence.replace(re, '<mark>$1</mark>');
+      }
+    }
+  }
+  return '';
 }
 
-let isAdmin = false;
-let editingId = null;
-let pendingDeleteId = null;
-let selectedTopics = [];
-let selectedFile = null;
-let extractedFullText = null;
-let nextId = 19;
-
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('today-date').textContent = new Date().toLocaleDateString('en-US', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
-  renderYearArchive();
-  renderTopicGrid();
-  updateTotalCount();
-  buildTopicsPicker();
-  setupDragDrop();
+// Event delegation for expand
+document.addEventListener('click', function(e) {
+  if (e.target.closest('.item-dl') || e.target.closest('.topic-btn') || e.target.closest('.topic-clear')) return;
+  var row = e.target.closest('.item-row');
+  if (!row) return;
+  var item = row.closest('.item');
+  if (!item) return;
+  var isOpen = item.classList.contains('open');
+  document.querySelectorAll('.item.open').forEach(function(el) { el.classList.remove('open'); });
+  if (!isOpen) item.classList.add('open');
 });
 
-function updateTotalCount() {
-  document.getElementById('totalCount').textContent = ISSUES.length + ' issues available';
-  if (isAdmin) {
-    document.getElementById('adminIssueCount').textContent = ISSUES.length + ' issues in archive';
-    document.getElementById('adminHeadCount').textContent = ISSUES.length + ' total issues';
-  }
-}
+// Download button delegation
+document.addEventListener('click', function(e) {
+  var btn = e.target.closest('.item-dl');
+  if (!btn) return;
+  var pdf = btn.getAttribute('data-pdf');
+  if (pdf) window.open(pdf, '_blank');
+});
 
-// ── YEAR ARCHIVE ──
-function renderYearArchive(filterTopic = null) {
-  const years = [...new Set(ISSUES.map(i => i.year))].sort((a,b) => b-a);
-  const container = document.getElementById('yearArchive');
-  container.innerHTML = '';
-  years.forEach(year => {
-    let yearIssues = ISSUES.filter(i => i.year === year);
-    if (filterTopic) yearIssues = yearIssues.filter(i => i.topics.includes(filterTopic));
-    if (!yearIssues.length) return;
-    const sec = document.createElement('div');
-    sec.className = 'year-section';
-    sec.innerHTML = `<div class="year-label">${year}</div>`;
-    const grid = document.createElement('div');
-    grid.className = 'pdf-grid';
-    yearIssues.forEach(issue => {
-      const card = document.createElement('div');
-      card.className = 'pdf-card';
-      card.style.cursor = 'pointer';
-      if (issue.cover) {
-        card.style.backgroundImage = `url(${issue.cover})`;
-        card.style.backgroundSize = 'cover';
-        card.style.backgroundPosition = 'center top';
-        card.style.background = `linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.65)), url(${issue.cover}) center top / cover no-repeat`;
+// Topic button delegation
+document.addEventListener('click', function(e) {
+  var btn = e.target.closest('.topic-btn');
+  if (!btn) return;
+  renderTopics(btn.getAttribute('data-topic'));
+});
+
+// Build item HTML
+function makeItems(list, query) {
+  var html = '';
+  for (var i = 0; i < list.length; i++) {
+    var issue = list[i];
+    var tags = '';
+    if (issue.topics) {
+      for (var t = 0; t < issue.topics.length; t++) {
+        tags += '<span class="topic-tag">' + issue.topics[t] + '</span>';
       }
-      card.onclick = function(e) {
-        if (e.target.closest('.card-admin-actions')) return;
-        if (issue.pdf) window.open(issue.pdf, '_blank');
-      };
-      const tags = issue.topics.map(t => `<span class="topic-tag${filterTopic===t?' highlighted':''}">${t}</span>`).join('');
-      card.innerHTML = `
-        <div style="flex:1; display:flex; flex-direction:column; justify-content:center;">
-          <div class="issue-date">${issue.month} ${issue.year}</div>
-          <div class="issue-title">${issue.title}${issue.author ? ': ' + issue.author : ''}</div>
-          ${issue.subtitle ? `<hr style="border:none;border-top:1px solid rgba(0,0,0,0.15);margin:6px 0;"><div class="issue-title">${issue.subtitle}</div>` : ''}
-        </div>
-        <div class="issue-topics" style="display:none;">${tags}</div>
-        <button class="dl-link" onclick="handleDownload('${issue.month} ${issue.year}','${issue.fileName||''}','${issue.pdf||''}')">
-          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Download PDF
-        </button>
-        <div class="card-admin-actions${isAdmin?' show':''}">
-          <button class="card-edit-btn" onclick="startEdit(${issue.id})">Edit</button>
-          <button class="card-del-btn" onclick="askDelete(${issue.id})">Remove</button>
-        </div>`;
-      grid.appendChild(card);
-    });
-    sec.appendChild(grid);
-    container.appendChild(sec);
-  });
-}
-
-// ── TOPIC GRID ──
-function renderTopicGrid() {
-  const grid = document.getElementById('topicGrid');
-  grid.innerHTML = '';
-  ALL_TOPICS.forEach(topicName => {
-    const meta = TOPIC_META[topicName];
-    const issueList = ISSUES.filter(i => i.topics.includes(topicName));
-    if (!issueList.length) return;
-    const card = document.createElement('div');
-    card.className = 'topic-card';
-    const items = issueList.slice(0,4).map(i =>
-      `<li onclick="filterByTopic('${topicName}')">${i.month} ${i.year}: ${i.title.length>38?i.title.slice(0,35)+'…':i.title}<span>${i.year}</span></li>`
-    ).join('');
-    card.innerHTML = `
-      <div class="topic-card-head" style="border-top:3px solid ${meta.color}">
-        <h3>${meta.icon} ${topicName}</h3>
-        <div class="topic-count">${issueList.length} issue${issueList.length!==1?'s':''} · ${meta.desc}</div>
-      </div>
-      <div class="topic-card-body"><ul>${items}</ul></div>`;
-    card.querySelector('.topic-card-head').addEventListener('click', () => filterByTopic(topicName));
-    grid.appendChild(card);
-  });
-}
-
-function filterByTopic(topic) {
-  renderYearArchive(topic);
-  switchView('browse', document.querySelector('nav button'));
-  document.getElementById('browseHeading').textContent = 'Topic: ' + topic;
-  document.getElementById('totalCount').textContent = ISSUES.filter(i=>i.topics.includes(topic)).length + ' issues';
-  let reset = document.getElementById('topicReset');
-  if (!reset) {
-    reset = document.createElement('button');
-    reset.id = 'topicReset';
-    reset.style.cssText = 'background:none;border:none;font-family:"DM Mono",monospace;font-size:10px;color:#8b1a1a;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;padding:0;margin-left:8px;';
-    reset.textContent = '✕ Clear';
-    reset.onclick = () => { renderYearArchive(); document.getElementById('browseHeading').textContent='Complete Archive'; updateTotalCount(); reset.remove(); };
-    document.querySelector('.section-header').appendChild(reset);
-  }
-}
-
-// ── SEARCH ──
-function onSearchInput() {
-  document.getElementById('clearBtn').classList.toggle('visible', document.getElementById('searchInput').value.length > 0);
-}
-function runSearch() {
-  const term = document.getElementById('searchInput').value.trim().toLowerCase();
-  if (!term) return;
-  const terms = term.split(/\s+/).filter(Boolean);
-  const results = ISSUES.filter(issue => {
-    const hay = (issue.title+' '+issue.excerpt+' '+(issue.fullText||'')+' '+issue.topics.join(' ')+' '+issue.month+' '+issue.year).toLowerCase();
-    return terms.every(t => hay.includes(t));
-  });
-  const container = document.getElementById('searchResults');
-  container.innerHTML = '';
-  document.getElementById('searchResultCount').textContent = results.length + ' result'+(results.length!==1?'s':'')+' for "'+document.getElementById('searchInput').value.trim()+'"';
-  if (!results.length) { container.innerHTML = `<div class="no-results">No issues found matching your search.</div>`; }
-  else {
-    results.forEach(issue => {
-      const highlighted = hlText(issue.excerpt, terms);
-      const tags = issue.topics.map(t=>`<span class="topic-tag">${t}</span>`).join('');
-      const el = document.createElement('div');
-      el.className = 'result-item';
-      el.innerHTML = `
-        <div class="result-meta">
-          <span class="result-year">${issue.year}</span>
-          ${issue.month}
-        </div>
-        <div class="result-content">
-          <h3>${hlText(issue.title, terms)}</h3>
-          <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px;">${tags}</div>
-          <p>${highlighted}</p>
-          <button class="dl-link" onclick="handleDownload('${issue.month} ${issue.year}','${issue.fileName||''}','${issue.pdf||''}')">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Download PDF
-          </button>
-        </div>`;
-      container.appendChild(el);
-    });
-  }
-  switchView('search', document.getElementById('searchNavBtn'));
-}
-function hlText(text, terms) {
-  let out = text;
-  terms.forEach(t => { const re = new RegExp(`(${t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi'); out = out.replace(re, '<mark>$1</mark>'); });
-  return out;
-}
-function clearSearch() {
-  document.getElementById('searchInput').value = '';
-  document.getElementById('clearBtn').classList.remove('visible');
-  switchView('browse', document.querySelector('nav button'));
-}
-
-// ── VIEW SWITCHING ──
-function switchView(view, btn) {
-  document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-  document.getElementById('view-'+view).classList.add('active');
-  if (btn) btn.classList.add('active');
-  if (view === 'admin') renderAdminStats();
-}
-
-// ── ADMIN LOGIN ──
-function openAdminModal() {
-  document.getElementById('adminModal').classList.add('open');
-  setTimeout(() => document.getElementById('passwordInput').focus(), 80);
-}
-function closeAdminModal() {
-  document.getElementById('adminModal').classList.remove('open');
-  document.getElementById('passwordInput').value = '';
-  document.getElementById('modalError').classList.remove('visible');
-}
-function checkPassword() {
-  if (document.getElementById('passwordInput').value === 'sharon2024') {
-    closeAdminModal();
-    isAdmin = true;
-    document.getElementById('adminBar').classList.add('visible');
-    document.getElementById('adminNavTab').classList.add('show');
-    document.getElementById('adminLoginBtn').textContent = '★ Admin Active';
-    document.getElementById('adminLoginBtn').style.color = '#b8860b';
-    document.getElementById('adminLoginBtn').style.borderColor = '#b8860b';
-    updateTotalCount();
-    renderManageTable();
-    renderYearArchive();
-  } else {
-    document.getElementById('modalError').classList.add('visible');
-    document.getElementById('passwordInput').value = '';
-    document.getElementById('passwordInput').focus();
-  }
-}
-function logoutAdmin() {
-  isAdmin = false;
-  document.getElementById('adminBar').classList.remove('visible');
-  document.getElementById('adminNavTab').classList.remove('show');
-  document.getElementById('adminLoginBtn').textContent = '⌂ Admin Login';
-  document.getElementById('adminLoginBtn').style.color = '';
-  document.getElementById('adminLoginBtn').style.borderColor = '';
-  cancelEdit();
-  switchView('browse', document.querySelector('nav button'));
-  renderYearArchive();
-}
-
-// ── ADMIN STATS ──
-function renderAdminStats() {
-  const years = [...new Set(ISSUES.map(i => i.year))];
-  const withPdf = ISSUES.filter(i => i.pdf && i.pdf !== '#').length;
-  const stats = [
-    { num: ISSUES.length, label: 'Total Issues' },
-    { num: years.length, label: 'Years Covered' },
-    { num: Math.min(...ISSUES.map(i=>i.year)) + '–' + Math.max(...ISSUES.map(i=>i.year)), label: 'Archive Span', noFormat: true },
-    { num: withPdf, label: 'PDFs Linked' },
-  ];
-  document.getElementById('adminStats').innerHTML = stats.map(s =>
-    `<div class="stat-card"><div class="stat-num">${s.num}</div><div class="stat-label">${s.label}</div></div>`
-  ).join('');
-}
-
-// ── MANAGE TABLE ──
-function renderManageTable() {
-  const filter = (document.getElementById('manageSearch').value||'').toLowerCase();
-  const sorted = [...ISSUES].sort((a,b) => b.year-a.year || MONTHS_ORDER.indexOf(b.month)-MONTHS_ORDER.indexOf(a.month));
-  const filtered = filter ? sorted.filter(i => (i.title+' '+i.month+' '+i.year).toLowerCase().includes(filter)) : sorted;
-  const tbody = document.getElementById('manageTableBody');
-  tbody.innerHTML = '';
-  filtered.forEach(issue => {
-    const hasPdf = issue.pdf && issue.pdf !== '#';
-    const tagHtml = issue.topics.map(t=>`<span class="tbl-badge">${t}</span>`).join('');
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td class="col-date">${issue.month}<br>${issue.year}</td>
-      <td class="col-title">${issue.title}${issue.volume?'<br><span style="font-family:\'DM Mono\',monospace;font-size:10px;color:var(--ink-faint)">'+issue.volume+'</span>':''}</td>
-      <td>${tagHtml}</td>
-      <td class="col-file ${hasPdf?'':'no-file'}">${hasPdf ? '✓ '+issue.fileName : '✗ Not linked'}${issue.fullText ? '<br><span style="color:var(--green);font-size:9px;">✓ text indexed</span>' : ''}</td>
-      <td><div class="row-actions">
-        <button class="tbl-btn tbl-edit" onclick="startEdit(${issue.id})">Edit</button>
-        <button class="tbl-btn tbl-del" onclick="askDelete(${issue.id})">Remove</button>
-      </div></td>`;
-    tbody.appendChild(tr);
-  });
-  if (!filtered.length) tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:28px;color:var(--ink-faint);font-family:'DM Mono',monospace;font-size:11px;">No issues match your filter.</td></tr>`;
-}
-
-// ── TOPICS PICKER ──
-function buildTopicsPicker() {
-  const picker = document.getElementById('topicsPicker');
-  picker.innerHTML = '';
-  ALL_TOPICS.forEach(t => {
-    const pill = document.createElement('span');
-    pill.className = 'topic-pill' + (selectedTopics.includes(t) ? ' selected' : '');
-    pill.textContent = t;
-    pill.onclick = () => {
-      if (selectedTopics.includes(t)) selectedTopics = selectedTopics.filter(x=>x!==t);
-      else selectedTopics.push(t);
-      buildTopicsPicker();
-    };
-    picker.appendChild(pill);
-  });
-}
-
-// ── FILE DROP ──
-function setupDragDrop() {
-  const zone = document.getElementById('uploadZone');
-  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
-  zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
-  zone.addEventListener('drop', e => {
-    e.preventDefault();
-    zone.classList.remove('drag-over');
-    const file = e.dataTransfer.files[0];
-    if (file && file.type === 'application/pdf') setFile(file);
-    else showFormMsg('Please drop a PDF file.', 'error');
-  });
-}
-function onFileSelected(input) {
-  if (input.files[0]) setFile(input.files[0]);
-}
-function setFile(file) {
-  selectedFile = file;
-  extractedFullText = null;
-  const zone = document.getElementById('uploadZone');
-  zone.classList.remove('has-file');
-  zone.classList.add('extracting');
-  document.getElementById('uzIcon').textContent = '⏳';
-  document.getElementById('uzTitle').textContent = file.name;
-  document.getElementById('uzSub').textContent = 'Extracting text for search…';
-  document.getElementById('fulltextNote').classList.remove('show');
-  const progress = document.getElementById('extractProgress');
-  const bar = document.getElementById('extractBar');
-  progress.classList.add('show');
-  bar.style.width = '5%';
-  const reader = new FileReader();
-  reader.onload = async function(e) {
-    try {
-      if (typeof pdfjsLib === 'undefined') throw new Error('PDF.js not loaded');
-      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-      const typedArray = new Uint8Array(e.target.result);
-      const pdf = await pdfjsLib.getDocument({ data: typedArray }).promise;
-      const numPages = pdf.numPages;
-      let fullText = '';
-      for (let p = 1; p <= numPages; p++) {
-        const page = await pdf.getPage(p);
-        const content = await page.getTextContent();
-        fullText += content.items.map(item => item.str).join(' ') + '\n';
-        bar.style.width = Math.round((p / numPages) * 90) + '%';
-      }
-      extractedFullText = fullText.replace(/\s+/g, ' ').trim();
-      const excerpt = document.getElementById('fExcerpt');
-      if (!excerpt.value.trim()) {
-        const sentences = extractedFullText.match(/[^.!?]+[.!?]+/g) || [];
-        excerpt.value = sentences.slice(0, 4).join(' ').trim().slice(0, 600);
-      }
-      bar.style.width = '100%';
-      setTimeout(() => {
-        zone.classList.remove('extracting');
-        zone.classList.add('has-file');
-        document.getElementById('uzIcon').textContent = '✅';
-        document.getElementById('uzTitle').textContent = file.name;
-        document.getElementById('uzSub').textContent = (file.size/1024/1024).toFixed(2) + ' MB · ' + numPages + ' page' + (numPages!==1?'s':'') + ' · ' + extractedFullText.split(/\s+/).length.toLocaleString() + ' words indexed';
-        document.getElementById('fulltextNote').classList.add('show');
-        progress.classList.remove('show');
-        bar.style.width = '0%';
-      }, 400);
-    } catch(err) {
-      zone.classList.remove('extracting');
-      zone.classList.add('has-file');
-      document.getElementById('uzIcon').textContent = '📄';
-      document.getElementById('uzTitle').textContent = file.name;
-      document.getElementById('uzSub').textContent = (file.size/1024/1024).toFixed(2) + ' MB · Could not extract text (fill excerpt manually)';
-      progress.classList.remove('show');
-      bar.style.width = '0%';
     }
-  };
-  reader.readAsArrayBuffer(file);
-}
-function clearFileInput() {
-  selectedFile = null;
-  extractedFullText = null;
-  const zone = document.getElementById('uploadZone');
-  zone.classList.remove('has-file', 'extracting');
-  document.getElementById('uzIcon').textContent = '📄';
-  document.getElementById('uzTitle').textContent = 'Drop PDF here or click to browse';
-  document.getElementById('uzSub').textContent = 'PDF files only · Max 50 MB';
-  document.getElementById('pdfFileInput').value = '';
-  document.getElementById('fulltextNote').classList.remove('show');
-  document.getElementById('extractProgress').classList.remove('show');
-}
-
-// ── SUBMIT / EDIT ──
-function submitIssue() {
-  const month = document.getElementById('fMonth').value;
-  const year = parseInt(document.getElementById('fYear').value);
-  const title = document.getElementById('fTitle').value.trim();
-  const excerpt = document.getElementById('fExcerpt').value.trim();
-  const volume = document.getElementById('fVolume').value.trim();
-
-  if (!month || !year || !title) { showFormMsg('Please fill in Month, Year, and Title.', 'error'); return; }
-  if (selectedTopics.length === 0) { showFormMsg('Please select at least one topic.', 'error'); return; }
-  if (!editingId && !selectedFile) { showFormMsg('Please select a PDF file to upload.', 'error'); return; }
-
-  const btn = document.getElementById('submitBtn');
-  btn.textContent = editingId ? 'Saving…' : 'Adding…';
-  btn.classList.add('saving');
-
-  setTimeout(() => {
-    if (editingId) {
-      const idx = ISSUES.findIndex(i => i.id === editingId);
-      if (idx > -1) {
-        ISSUES[idx] = { ...ISSUES[idx], month, year, title, excerpt, volume,
-          topics: [...selectedTopics],
-          ...(extractedFullText ? { fullText: extractedFullText } : {}),
-          ...(selectedFile ? { pdf: URL.createObjectURL(selectedFile), fileName: selectedFile.name } : {})
-        };
-        showFormMsg('Issue updated successfully.', 'success');
+    var matchHtml = '';
+    if (query && issue.fullText) {
+      var snippet = getMatchSnippet(issue.fullText, query);
+      if (snippet) {
+        matchHtml = '<div class="item-match"><div class="item-match-label">Match found in article</div>' + snippet + '</div>';
       }
-      cancelEdit();
-    } else {
-      const pdfUrl = URL.createObjectURL(selectedFile);
-      ISSUES.push({ id: nextId++, year, month, title, excerpt, volume, topics: [...selectedTopics], pdf: pdfUrl, fileName: selectedFile.name, fullText: extractedFullText || '' });
-      showFormMsg('Issue "' + title + '" added to archive.', 'success');
-      resetForm();
     }
-
-    btn.textContent = editingId ? 'Save Changes' : '+ Add to Archive';
-    btn.classList.remove('saving');
-    renderYearArchive();
-    renderTopicGrid();
-    renderManageTable();
-    renderAdminStats();
-    updateTotalCount();
-  }, 600);
+    html += '<div class="item">';
+    html += '<div class="item-row">';
+    html += '<div class="item-num">' + String(i+1).padStart(2,'0') + '</div>';
+    html += '<div class="item-info">';
+    html += '<div class="item-title">' + issue.title + ': ' + issue.author + '</div>';
+    if (issue.subtitle) {
+      html += '<hr class="item-divider"><div class="item-sub">' + issue.subtitle + '</div>';
+    }
+    html += '<div class="item-topics">' + tags + '</div>';
+    html += '</div>';
+    html += '<div class="item-meta">';
+    html += '<div class="item-date">' + issue.month + ' ' + issue.year + '</div>';
+    html += '<div class="item-chevron">▼</div>';
+    html += '</div>';
+    html += '</div>';
+    html += '<div class="item-panel">';
+    if (matchHtml) html += matchHtml;
+    if (issue.excerpt) html += '<div class="item-synopsis">' + issue.excerpt + '</div>';
+    html += '<button class="item-dl" data-pdf="' + (issue.pdf||'') + '">↓ Download PDF</button>';
+    html += '</div>';
+    html += '</div>';
+  }
+  return html;
 }
 
-function startEdit(id) {
-  const issue = ISSUES.find(i => i.id === id);
-  if (!issue) return;
-  editingId = id;
-  document.getElementById('fMonth').value = issue.month;
-  document.getElementById('fYear').value = issue.year;
-  document.getElementById('fTitle').value = issue.title;
-  document.getElementById('fExcerpt').value = issue.excerpt || '';
-  document.getElementById('fVolume').value = issue.volume || '';
-  selectedTopics = [...issue.topics];
-  buildTopicsPicker();
-  clearFileInput();
-  document.getElementById('formHeading').textContent = 'Edit Issue';
-  document.getElementById('formEditingLabel').textContent = issue.month + ' ' + issue.year;
-  document.getElementById('submitBtn').textContent = 'Save Changes';
-  document.getElementById('cancelEditBtn').style.display = 'inline-block';
-  document.getElementById('uzSub').textContent = 'Leave blank to keep existing PDF · ' + (issue.fileName || '');
-  switchView('admin', document.getElementById('adminNavTab'));
-  document.getElementById('formHeading').scrollIntoView({ behavior: 'smooth', block: 'center' });
-  clearFormMsg();
+// BROWSE
+function renderBrowse() {
+  var years = [];
+  ISSUES.forEach(function(i) { if (years.indexOf(i.year) === -1) years.push(i.year); });
+  years.sort(function(a,b) { return b-a; });
+  var html = '';
+  years.forEach(function(y) {
+    var issues = ISSUES.filter(function(i) { return i.year === y; });
+    html += '<div class="year-section"><div class="year-label">' + y + '</div>' + makeItems(issues, '') + '</div>';
+  });
+  document.getElementById('page-browse').innerHTML = html;
 }
 
-function cancelEdit() {
-  editingId = null;
-  resetForm();
-  document.getElementById('formHeading').textContent = 'Add New Issue';
-  document.getElementById('formEditingLabel').textContent = '';
-  document.getElementById('submitBtn').textContent = '+ Add to Archive';
-  document.getElementById('cancelEditBtn').style.display = 'none';
-  clearFormMsg();
-}
-
-function resetForm() {
-  document.getElementById('fMonth').value = '';
-  document.getElementById('fYear').value = '';
-  document.getElementById('fTitle').value = '';
-  document.getElementById('fExcerpt').value = '';
-  document.getElementById('fVolume').value = '';
-  selectedTopics = [];
-  buildTopicsPicker();
-  clearFileInput();
-}
-
-// ── DELETE ──
-function askDelete(id) {
-  const issue = ISSUES.find(i => i.id === id);
-  if (!issue) return;
-  pendingDeleteId = id;
-  document.getElementById('confirmIssueName').textContent = '"' + issue.title + '" (' + issue.month + ' ' + issue.year + ')';
-  document.getElementById('confirmModal').classList.add('open');
-}
-function closeConfirm() {
-  pendingDeleteId = null;
-  document.getElementById('confirmModal').classList.remove('open');
-}
-function confirmDelete() {
-  if (!pendingDeleteId) return;
-  ISSUES = ISSUES.filter(i => i.id !== pendingDeleteId);
-  closeConfirm();
-  renderYearArchive();
-  renderTopicGrid();
-  renderManageTable();
-  renderAdminStats();
-  updateTotalCount();
-}
-
-// ── FORM MESSAGES ──
-function showFormMsg(msg, type) {
-  const el = document.getElementById('formMsg');
-  el.textContent = msg;
-  el.className = 'form-msg ' + type;
-  setTimeout(() => el.className = 'form-msg', 5000);
-}
-function clearFormMsg() { document.getElementById('formMsg').className = 'form-msg'; }
-
-// ── DOWNLOAD ──
-function handleDownload(label, fileName, pdfPath) {
-  if (pdfPath && pdfPath !== '#') {
-    window.open(pdfPath, '_blank');
-  } else if (fileName && fileName !== 'undefined') {
-    window.open('pdfs/' + fileName, '_blank');
+// TOPICS
+function renderTopics(filterTopic) {
+  var page = document.getElementById('page-topics');
+  if (!filterTopic) {
+    var topics = [];
+    ISSUES.forEach(function(i) {
+      (i.topics||[]).forEach(function(t) { if (topics.indexOf(t) === -1) topics.push(t); });
+    });
+    topics.sort();
+    var html = '<div class="topic-grid">';
+    topics.forEach(function(t) {
+      var count = ISSUES.filter(function(i) { return (i.topics||[]).indexOf(t) !== -1; }).length;
+      html += '<button class="topic-btn" data-topic="' + t + '">';
+      html += '<div class="topic-name">' + t + '</div>';
+      html += '<div class="topic-count">' + count + ' issue' + (count !== 1 ? 's' : '') + '</div>';
+      html += '</button>';
+    });
+    html += '</div>';
+    page.innerHTML = html;
   } else {
-    alert('No PDF linked for "The Sharon Star — ' + label + '".');
+    var filtered = ISSUES.filter(function(i) { return (i.topics||[]).indexOf(filterTopic) !== -1; });
+    var html = '<div class="topic-filter-header">';
+    html += '<div class="topic-filter-title">Topic: <span>' + filterTopic + '</span></div>';
+    html += '<button class="topic-clear" id="topicClearBtn">← All Topics</button>';
+    html += '</div>';
+    html += makeItems(filtered, '');
+    page.innerHTML = html;
+    document.getElementById('topicClearBtn').addEventListener('click', function() { renderTopics(null); });
   }
 }
 
-document.getElementById('adminModal').addEventListener('click', function(e) { if (e.target===this) closeAdminModal(); });
-document.getElementById('confirmModal').addEventListener('click', function(e) { if (e.target===this) closeConfirm(); });
+// SEARCH
+function doSearch() {
+  var q = document.getElementById('searchInput').value.trim();
+  if (!q) return;
+  var ql = q.toLowerCase();
+  var results = ISSUES.filter(function(i) {
+    return (i.title + ' ' + i.author + ' ' + (i.subtitle||'') + ' ' + (i.excerpt||'') + ' ' + i.month + ' ' + i.year + ' ' + (i.topics||[]).join(' ') + ' ' + (i.fullText||'')).toLowerCase().indexOf(ql) !== -1;
+  });
+  var btn = document.getElementById('nav-search');
+  btn.style.display = 'block';
+  btn.textContent = 'Search Results';
+  var html = '<div class="results-header">';
+  html += results.length > 0
+    ? '<b>' + results.length + '</b> result' + (results.length !== 1 ? 's' : '') + ' for "<b>' + q + '</b>"'
+    : 'No results for "<b>' + q + '</b>"';
+  html += '</div>';
+  html += results.length > 0 ? makeItems(results, q) : '<div class="no-results">Try a different search term</div>';
+  document.getElementById('page-search').innerHTML = html;
+  showPage('search');
+}
+
+// NAV
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelectorAll('.nav-btn').forEach(function(b) { b.classList.remove('active'); });
+  document.getElementById('page-' + name).classList.add('active');
+  document.getElementById('nav-' + name).classList.add('active');
+}
+
+document.getElementById('searchInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') doSearch();
+});
+
+renderBrowse();
+renderTopics(null);
 </script>
 </body>
 </html>

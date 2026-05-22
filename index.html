@@ -16,9 +16,13 @@ body { background:#fff; color:#0a0a0a; font-family:'Space Grotesk',sans-serif; m
 .logo-title { font-size:30px; font-weight:700; color:#0a0a0a; letter-spacing:-0.5px; cursor:pointer; }
 .logo-title span { color:#1a6fd4; }
 .header-right { padding:32px 48px; display:flex; align-items:center; gap:0; }
-.search-input { flex:1; padding:12px 20px; background:#f5f5f5; border:2px solid #0a0a0a; color:#0a0a0a; font-family:'Space Grotesk',sans-serif; font-size:14px; outline:none; transition:border-color 0.2s; }
+.search-wrap { position:relative; flex:1; display:flex; }
+.search-input { flex:1; width:100%; padding:12px 36px 12px 20px; background:#f5f5f5; border:2px solid #0a0a0a; color:#0a0a0a; font-family:'Space Grotesk',sans-serif; font-size:14px; outline:none; transition:border-color 0.2s; }
 .search-input:focus { border-color:#1a6fd4; }
 .search-input::placeholder { color:#999; }
+.search-clear { position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; color:#999; font-size:16px; line-height:1; cursor:pointer; padding:4px; display:none; transition:color 0.15s; }
+.search-clear:hover { color:#0a0a0a; }
+.search-clear.visible { display:block; }
 .search-btn { padding:12px 24px; background:#0a0a0a; color:#fff; border:2px solid #0a0a0a; font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; transition:background 0.2s; white-space:nowrap; }
 .search-btn:hover { background:#1a6fd4; border-color:#1a6fd4; }
 
@@ -115,7 +119,7 @@ body { background:#fff; color:#0a0a0a; font-family:'Space Grotesk',sans-serif; m
   .logo-eyebrow { font-size:9px; letter-spacing:0.2em; }
   .logo-title { font-size:24px; }
   .header-right { padding:14px 20px; }
-  .search-input { font-size:16px; /* prevent iOS zoom */ padding:11px 14px; }
+  .search-input { font-size:16px; /* prevent iOS zoom */ padding:11px 36px 11px 14px; }
   .search-btn { padding:11px 16px; font-size:10px; }
 
   /* Nav scrolls horizontally, smaller padding */
@@ -177,7 +181,10 @@ body { background:#fff; color:#0a0a0a; font-family:'Space Grotesk',sans-serif; m
     <div class="logo-title" onclick="showPage('browse')">The Sharon <span>Star</span></div>
   </div>
   <div class="header-right">
-    <input class="search-input" id="searchInput" type="text" placeholder="Keyword Search…">
+    <div class="search-wrap">
+      <input class="search-input" id="searchInput" type="text" placeholder="Keyword Search…">
+      <button class="search-clear" id="searchClear" onclick="clearSearch()" title="Clear search">×</button>
+    </div>
     <button class="search-btn" onclick="doSearch()">Search</button>
   </div>
 </div>
@@ -3492,6 +3499,15 @@ function renderTopics(filterTopic) {
 }
 
 // SEARCH
+function clearSearch() {
+  var input = document.getElementById('searchInput');
+  input.value = '';
+  document.getElementById('searchClear').classList.remove('visible');
+  document.getElementById('nav-search').style.display = 'none';
+  showPage('browse');
+  input.focus();
+}
+
 function doSearch() {
   var q = document.getElementById('searchInput').value.trim();
   if (!q) return;
@@ -3520,6 +3536,9 @@ function showPage(name) {
   var navEl = document.getElementById('nav-' + name); if (navEl) navEl.classList.add('active');
 }
 
+document.getElementById('searchInput').addEventListener('input', function() {
+  document.getElementById('searchClear').classList.toggle('visible', this.value.length > 0);
+});
 document.getElementById('searchInput').addEventListener('keydown', function(e) {
   if (e.key === 'Enter') doSearch();
 });

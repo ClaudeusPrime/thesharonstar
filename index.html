@@ -224,7 +224,7 @@ body { background:#fff; color:#0a0a0a; font-family:'Space Grotesk',sans-serif; m
   </div>
   <div class="header-right">
     <div class="search-wrap">
-      <input class="search-input" id="searchInput" type="text" placeholder="Search… (multiple words narrow results)">
+      <input class="search-input" id="searchInput" type="text" placeholder="Keyword Search…">
       <button class="search-clear" id="searchClear" onclick="clearSearch()" title="Clear search">×</button>
     </div>
     <button class="search-btn" onclick="doSearch()">Search</button>
@@ -7954,19 +7954,11 @@ function doSearch() {
   btn.style.display = 'block';
   btn.textContent = 'Search Results';
   var html = '<div class="results-header">';
-  if (results.length > 0) {
-    html += '<b>' + results.length + '</b> result' + (results.length !== 1 ? 's' : '') + ' for ';
-    if (words.length > 1) {
-      html += words.map(function(w) { return '"<b>' + w + '</b>"'; }).join(' + ');
-    } else {
-      html += '"<b>' + q + '</b>"';
-    }
-  } else {
-    html += 'No results for "<b>' + q + '</b>"';
-    if (words.length > 1) html += ' — try fewer words';
-  }
+  html += results.length > 0
+    ? '<b>' + results.length + '</b> result' + (results.length !== 1 ? 's' : '') + ' for \"<b>' + q + '</b>\"'
+    : 'No results for \"<b>' + q + '</b>\"';
   html += '</div>';
-  html += results.length > 0 ? makeItems(results, q, true) : '<div class="no-results">Try fewer or different search terms</div>';
+  html += results.length > 0 ? makeItems(results, q, true) : '<div class="no-results">Try a different keyword</div>';
   document.getElementById('page-search').innerHTML = html;
   showPage('search');
 }

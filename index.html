@@ -38,8 +38,18 @@ body { background:#fff; color:#0a0a0a; font-family:'Space Grotesk',sans-serif; m
 .page.active { display:block; }
 
 /* ── YEAR / BROWSE ── */
-.year-section { margin-bottom:48px; }
-.year-label { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.3em; text-transform:uppercase; color:#444; padding-bottom:12px; border-bottom:2px solid #0a0a0a; margin-bottom:0; }
+.year-jump-bar { display:flex; flex-wrap:wrap; gap:6px; padding:14px 16px 10px; border-bottom:1px solid #ddd; margin-bottom:8px; position:sticky; top:0; background:#fff; z-index:10; }
+.year-jump-btn { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.15em; padding:4px 10px; border:1px solid #ccc; border-radius:3px; background:#fafafa; color:#444; cursor:pointer; transition:background 0.15s, color 0.15s, border-color 0.15s; }
+.year-jump-btn:hover { background:#f0f6ff; border-color:#1a6fd4; color:#1a6fd4; }
+.year-jump-btn.active { background:#1a6fd4; border-color:#1a6fd4; color:#fff; }
+.year-section { margin-bottom:4px; }
+.year-label { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.3em; text-transform:uppercase; color:#444; padding:14px 16px 12px; border-bottom:2px solid #0a0a0a; margin-bottom:0; display:flex; align-items:center; justify-content:space-between; cursor:pointer; user-select:none; }
+.year-label:hover { background:#f8f8f8; }
+.year-label-text { display:flex; align-items:center; gap:10px; }
+.year-issue-count { font-size:10px; color:#aaa; letter-spacing:0.1em; }
+.year-chevron { font-size:10px; color:#aaa; transition:transform 0.2s; }
+.year-section.collapsed .year-chevron { transform:rotate(-90deg); }
+.year-section.collapsed .year-items { display:none; }
 
 /* ── ISSUE ROWS ── */
 .item { border-bottom:1px solid #ddd; }
@@ -178,6 +188,8 @@ body { background:#fff; color:#0a0a0a; font-family:'Space Grotesk',sans-serif; m
   .topic-filter-title { font-size:18px; }
 
   .year-label { font-size:10px; letter-spacing:0.2em; }
+  .year-jump-bar { gap:4px; padding:10px 12px 8px; }
+  .year-jump-btn { font-size:10px; padding:4px 8px; }
   .no-results { padding:32px 16px; font-size:14px; }
 
 
@@ -212,7 +224,7 @@ body { background:#fff; color:#0a0a0a; font-family:'Space Grotesk',sans-serif; m
   </div>
   <div class="header-right">
     <div class="search-wrap">
-      <input class="search-input" id="searchInput" type="text" placeholder="Keyword Search…">
+      <input class="search-input" id="searchInput" type="text" placeholder="Search… (multiple words narrow results)">
       <button class="search-clear" id="searchClear" onclick="clearSearch()" title="Clear search">×</button>
     </div>
     <button class="search-btn" onclick="doSearch()">Search</button>
@@ -7612,8 +7624,13 @@ In closing, One Solitary Life: He was born in an obscure village, the child of a
 // Highlight search term in text
 function highlight(text, query) {
   if (!query) return text;
-  var escaped = query.replace(/[-.*+?^${}()|[\]\\]/g, '\\$&'); var re = new RegExp('(' + escaped + ')', 'gi');
-  return text.replace(re, '<mark>$1</mark>');
+  var words = query.trim().split(/\s+/).filter(Boolean);
+  words.forEach(function(w) {
+    var escaped = w.replace(/[-.*+?^${}()|[\]\\]/g, '\\$&');
+    var re = new RegExp('(' + escaped + ')', 'gi');
+    text = text.replace(re, '<mark>$1</mark>');
+  });
+  return text;
 }
 
 // Event delegation for expand/collapse
@@ -7829,12 +7846,59 @@ function renderBrowse() {
   var years = [];
   ISSUES.forEach(function(i) { if (years.indexOf(i.year) === -1) years.push(i.year); });
   years.sort(function(a,b) { return b-a; });
-  var html = '';
+
+  // Jump bar
+  var jumpHtml = '<div class="year-jump-bar" id="year-jump-bar">';
   years.forEach(function(y) {
-    var issues = ISSUES.filter(function(i) { return i.year === y; });
-    html += '<div class="year-section"><div class="year-label">' + y + '</div>' + makeItems(issues, '', false) + '</div>';
+    jumpHtml += '<button class="year-jump-btn" onclick="jumpToYear(' + y + ')">' + y + '</button>';
   });
-  document.getElementById('page-browse').innerHTML = html;
+  jumpHtml += '</div>';
+
+  // Year sections — most recent year open, rest collapsed
+  var sectionsHtml = '';
+  years.forEach(function(y, idx) {
+    var issues = ISSUES.filter(function(i) { return i.year === y; });
+    var collapsed = idx > 0 ? ' collapsed' : '';
+    sectionsHtml += '<div class="year-section' + collapsed + '" id="year-' + y + '">'
+      + '<div class="year-label" onclick="toggleYear(' + y + ')">'
+      + '<span class="year-label-text">' + y + '<span class="year-issue-count">' + issues.length + ' issue' + (issues.length !== 1 ? 's' : '') + '</span></span>'
+      + '<span class="year-chevron">▼</span>'
+      + '</div>'
+      + '<div class="year-items">' + makeItems(issues, '', false) + '</div>'
+      + '</div>';
+  });
+
+  document.getElementById('page-browse').innerHTML = jumpHtml + sectionsHtml;
+}
+
+function toggleYear(y) {
+  var section = document.getElementById('year-' + y);
+  if (!section) return;
+  section.classList.toggle('collapsed');
+  // Update jump bar active state
+  var btns = document.querySelectorAll('.year-jump-btn');
+  btns.forEach(function(btn) { btn.classList.remove('active'); });
+  if (!section.classList.contains('collapsed')) {
+    var active = document.querySelector('.year-jump-btn[onclick="jumpToYear(' + y + ')"]');
+    if (active) active.classList.add('active');
+  }
+}
+
+function jumpToYear(y) {
+  var section = document.getElementById('year-' + y);
+  if (!section) return;
+  // Collapse all, open this one
+  document.querySelectorAll('.year-section').forEach(function(s) { s.classList.add('collapsed'); });
+  section.classList.remove('collapsed');
+  // Scroll to it (offset for sticky jump bar)
+  var bar = document.getElementById('year-jump-bar');
+  var barH = bar ? bar.offsetHeight : 0;
+  var top = section.getBoundingClientRect().top + window.pageYOffset - barH - 8;
+  window.scrollTo({ top: top, behavior: 'smooth' });
+  // Update jump bar highlight
+  document.querySelectorAll('.year-jump-btn').forEach(function(btn) { btn.classList.remove('active'); });
+  var active = document.querySelector('.year-jump-btn[onclick="jumpToYear(' + y + ')"]');
+  if (active) active.classList.add('active');
 }
 
 // TOPICS
@@ -7881,19 +7945,28 @@ function clearSearch() {
 function doSearch() {
   var q = document.getElementById('searchInput').value.trim();
   if (!q) return;
-  var ql = q.toLowerCase();
+  var words = q.toLowerCase().split(/\s+/).filter(Boolean);
   var results = ISSUES.filter(function(i) {
-    return (i.title + ' ' + i.author + ' ' + (i.subtitle||'') + ' ' + (i.excerpt||'') + ' ' + i.month + ' ' + i.year + ' ' + (i.topics||[]).join(' ') + ' ' + (i.articleText||'')).toLowerCase().indexOf(ql) !== -1;
+    var haystack = (i.title + ' ' + i.author + ' ' + (i.subtitle||'') + ' ' + (i.excerpt||'') + ' ' + i.month + ' ' + i.year + ' ' + (i.topics||[]).join(' ') + ' ' + (i.articleText||'')).toLowerCase();
+    return words.every(function(w) { return haystack.indexOf(w) !== -1; });
   });
   var btn = document.getElementById('nav-search');
   btn.style.display = 'block';
   btn.textContent = 'Search Results';
   var html = '<div class="results-header">';
-  html += results.length > 0
-    ? '<b>' + results.length + '</b> result' + (results.length !== 1 ? 's' : '') + ' for "<b>' + q + '</b>"'
-    : 'No results for "<b>' + q + '</b>"';
+  if (results.length > 0) {
+    html += '<b>' + results.length + '</b> result' + (results.length !== 1 ? 's' : '') + ' for ';
+    if (words.length > 1) {
+      html += words.map(function(w) { return '"<b>' + w + '</b>"'; }).join(' + ');
+    } else {
+      html += '"<b>' + q + '</b>"';
+    }
+  } else {
+    html += 'No results for "<b>' + q + '</b>"';
+    if (words.length > 1) html += ' — try fewer words';
+  }
   html += '</div>';
-  html += results.length > 0 ? makeItems(results, q, true) : '<div class="no-results">Try a different search term</div>';
+  html += results.length > 0 ? makeItems(results, q, true) : '<div class="no-results">Try fewer or different search terms</div>';
   document.getElementById('page-search').innerHTML = html;
   showPage('search');
 }
